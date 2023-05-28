@@ -4,7 +4,7 @@ import { IHelpTable, } from '@mikezimm/fps-library-v2/lib/banner/components/Sing
 import { createAboutRow } from '@mikezimm/fps-library-v2/lib/banner/components/Panel/createAboutRow';
 import { IWebpartBannerProps } from '@mikezimm/fps-library-v2/lib/banner/mainReact/IWebpartBannerProps';
 
-export const panelVersionNumber = '2022-07-22 -  1.0.0.01'; //Added to show in panel
+export const panelVersionNumber = '2023-05-28 -  0.0.2'; //Added to show in panel
 
 export function aboutTable( bannerProps: IWebpartBannerProps ): { table: IHelpTable } {
 
@@ -27,7 +27,9 @@ export function aboutTable( bannerProps: IWebpartBannerProps ): { table: IHelpTa
      * WARNING:  DO NOT add any CDNs to Global Warn or Approve unless you want it to apply to JS as well.
      */
 
-    table.rows.push( createAboutRow('2022-07-22',"1.0.0.01","Initial Build", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
+    table.rows.push( createAboutRow('2023-05-28',"0.0.2","EasyAnalytics", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
+
+    table.rows.push( createAboutRow('2023-05-28',"0.0.1","Initial Build", bannerProps.showRepoLinks === true ? bannerProps.gitHubRepo : null ) );
 
     return { table: table };
 
