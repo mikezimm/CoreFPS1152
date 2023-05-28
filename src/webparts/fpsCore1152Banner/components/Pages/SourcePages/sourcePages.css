@@ -72,13 +72,18 @@
     color: black;
 }
 
-.topSearch .button.isSelected {
+.sourcePage .button.isSelected,
+.sourcePage button.isSelected {
     /* background-color: $ms-color-themePrimary;
     border-color: $ms-color-themePrimary;
     color: $ms-color-white; */
     font-weight: bolder;
 }
 
+.sourceButtonRow {
+  padding-top: 10px;
+  font-weight: 600;
+}
 
 .sourceIconElement {
   font-size: 20px;

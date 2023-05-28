@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Pivot, PivotItem, PivotLinkFormat, PivotLinkSize,} from 'office-ui-fabric-react/lib/Pivot';
 
 // import { getExpandColumns, getSelectColumns } from '../../fpsReferences';
 
@@ -15,40 +14,38 @@ import { sortObjectArrayByStringKeyCollator } from '@mikezimm/fps-library-v2/lib
 // import { ISupportedHost } from '@mikezimm/fps-library-v2/lib/common/interfaces/@msft/1.15.2/layout';
 // import { IPinMeState } from "../../features/PinMe/Interfaces";
 
-import { ILoadPerformance, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/IPerformance';
+import { ILoadPerformance, IPerformanceOp, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/IPerformance';
 import { createBasePerformanceInit, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/functions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createPerformanceTableVisitor, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/tables';
 
 // import { getItemsContent, getUsedTabs } from './functions';
-import { IFpsAnalyticsReturn, fetchAnalytics } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/fetchAnalytics";
+import { IStateSourceA, } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA";
+import { getAnalyticsSummary } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/fetchAnalytics";
+import { createAnalyticsSourceProps } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/createAnalyticsSourceProps";
 import { compoundArrayFilter } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/functions/compoundArrayFilter";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { EasyPagesAnalTab, EasyPagesDevTab, EasyPagesRepoTab, ISourcePropsEP } from '@mikezimm/fps-library-v2/lib/banner/components/EasyPages/interfaces/epTypes';
+import { EasyPagesAnalTab,  } from '@mikezimm/fps-library-v2/lib/banner/components/EasyPages/interfaces/epTypes';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IEasyIcons } from '@mikezimm/fps-library-v2/lib/components/atoms/EasyIcons/interfaces/eiTypes';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { EasyDevPages, getZGitLinks } from '@mikezimm/fps-library-v2/lib/banner/components/EasyPages/functions/devLinks';
-import { IRepoLinks } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/CreateLinks';
 // import { prepSourceColumns } from '@mikezimm/fps-library-v2/lib/pnpjs/SourceItems/index';
-import { IFpsItemsReturn } from '@mikezimm/fps-library-v2/lib/pnpjs/Common/CheckItemsResults';
 import { prepSourceColumns } from '@mikezimm/fps-library-v2/lib/pnpjs/SourceItems/prepSourceColumns';
 import { ISourceProps } from '@mikezimm/fps-library-v2/lib/pnpjs/SourceItems/Interface';
-import { IEasyPagesSourceProps } from "@mikezimm/fps-library-v2/lib/components/atoms/EasyIcons/interfaces/IEasyPagesPageProps";
+import { IEasyPagesSourceProps } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/interfaces/IEasyPagesPageProps";
+import { IAnySourceItem } from '@mikezimm/fps-library-v2/lib/components/molecules/SourceList/IAnyContent';
+import { IStateSource } from '@mikezimm/fps-library-v2/lib/pnpjs/Common/IStateSource';
+import { ISourceButtonRowProps, sourceButtonRow } from '../Pages/SourcePages/sourceButtonRow';
 
-export type ISourceName = 'Current' | 'Parent' | 'Alternate' | typeof EasyPagesDevTab | typeof EasyPagesRepoTab | typeof EasyPagesAnalTab ;
-
-export const EasyPageNoFetchTabs: ISourceName[] = [ EasyPagesDevTab, EasyPagesRepoTab ] ;
+export type ISourceName =  typeof EasyPagesAnalTab ;
 
 export interface IEasyAnalyticsProps {
   expandedState: boolean;  //Is this particular page expanded
   analyticsListX: string;
 }
 
-export interface IEasyPagesPageHookProps {
+export interface IEasyAnalyticsHookProps {
   easyAnalyticsProps: IEasyAnalyticsProps;  // Props specific to this Source/Page component
   easyPagesSourceProps: IEasyPagesSourceProps;  // General props which apply to all Sources/Pages
-  fpsItemsReturn?: IFpsItemsReturn;
+  // fpsItemsReturn?: IFpsItemsReturn;
 }
 
 export interface IEasyLink extends Partial<any> {
@@ -65,6 +62,8 @@ export interface IEasyLink extends Partial<any> {
 export const InfoTab = 'FetchInfoZz79';
 export const InfoIcon = 'History';
 
+export type IAnalyticsTab = 'Summary' | 'Items' | 'Fetch';
+export const AnalyticsTabs: IAnalyticsTab[] = [ 'Summary', 'Items', 'Fetch' ];
 
 /***
  *    .d8888. d888888b  .d8b.  d8888b. d888888b      db   db  .d88b.   .d88b.  db   dD 
@@ -77,7 +76,7 @@ export const InfoIcon = 'History';
  *                                                                                     
  */
 
-const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
+const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { context, styles, containerStyles, repo } = props.easyPagesSourceProps;
@@ -86,16 +85,22 @@ const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
   /**
    * State related to tabs visible items
    */
-  // const [ tab, setTab ] = useState<string>( tabs.length > 0 ? tabs[0] : 'Pages' );
-  const [ filtered, setFiltered ] = useState<IEasyLink[]>( sourceName === EasyPagesDevTab ? EasyDevPages : sourceName === EasyPagesRepoTab ? () => getZGitLinks( repo ) : [] );
+  const [ tab, setTab ] = useState<number>( 0 );
+  const [ sourceProps, setSourceProps ] = useState<ISourceProps>( createAnalyticsSourceProps( analyticsListX ) );
+  const [ stateSource, setStateSource ] = useState<IStateSourceA>( null );
+  const [ preFilteredItems, setPreFilteredItems ] = useState<IAnySourceItem[]>( [] );
+  const [ fetchPerformance, setFetchPerformance ] = useState<IPerformanceOp>( null );
+  const [ procPerformance, setProcPerformance ] = useState<IPerformanceOp>( null );
   // const [ activeTabs, setActiveTabs ] = useState<string[]>( tabs.length > 0 ? [ ...tabs, ...[ InfoTab ] ]: ['Pages'] );
 
   /**
    * State related to fetching the source props
    */
   const [ fetched, setFetched ] = useState<boolean>( false );
-  const [ performance, setPerformance ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ));
-  const [ items, setItems ] = useState<IEasyLink[]>( EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? EasyDevPages : [] );
+  // const [ performance, setPerformance ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ) ); //() => createBasePerformanceInit( 1, false )
+  const [ performance, setPerformance ] = useState<IPerformanceOp>( null ); //() => createBasePerformanceInit( 1, false )
+  const [ items, setItems ] = useState<IEasyLink[]>( [] );
+  const [ summary, setSummary ] = useState<IEasyLink[]>( [] );
 
 /***
  *     .o88b. db    db d8888b. d8888b. d88888b d8b   db d888888b      .d8888. d888888b d888888b d88888b 
@@ -113,16 +118,17 @@ const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
 
     if ( expandedState === true && fetched === false ) {
       const getItems = async (): Promise<void> => {
-        const itemsResults: IFpsAnalyticsReturn = await fetchAnalytics( analyticsListX );
+        const itemsResults: IStateSourceA = await getAnalyticsSummary( sourceProps );
         // const actualTabs = getUsedTabs( source, itemsResults.items );
         // actualTabs.push( InfoTab );
-        const links: IEasyLink[] = compoundArrayFilter( itemsResults.items, actualTabs[0], '' );
+        // const links: IEasyLink[] = compoundArrayFilter( itemsResults.items, actualTabs[0], '' );
         // setTab( actualTabs[0] );
-        setFetched( true );
-        setFiltered( links );
-        setItems( itemsResults.items );
+        setFetched( itemsResults.loaded );
+        // setFiltered( links );
+        setStateSource( itemsResults );
         // setActiveTabs( actualTabs );
-        setPerformance( itemsResults.performanceOp );
+        setFetchPerformance( itemsResults.performanceOp );
+        setProcPerformance( itemsResults.performanceOp );
       };
 
       // eslint-disable-next-line no-void
@@ -145,21 +151,6 @@ const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
  *                                                                            
  */
 
-  const onTextSearch = ( item: any, text: string = '' ): void => {
-    const SearchValue : string = typeof item === 'string' ? item : item && item.target && item.target.value ? item.target.value : '';
-    const links: IEasyLink[] = compoundArrayFilter( items, SearchValue, text );
-    setFiltered( links );
-    setTab( SearchValue );
-
-  }
-
-  // item SHOULD BE IPivotItemProps but have to cast as any in order to get itemKey and headerText
-  const pivotClick = ( item: PivotItem, ev?: React.MouseEvent<HTMLElement> ): void => {
-    //Because of Performance Tab, need to adjust what is returned.   have to use .indexOf because itemKey value is .$FetchInfo
-    const itemKey = !item.props.headerText ? InfoTab : item.props.headerText ;
-    onTextSearch( itemKey );
-
-  }
 
   /***
  *    d88888b db      d88888b .88b  d88. d88888b d8b   db d888888b 
@@ -179,30 +170,25 @@ const EasyPagesPageHook: React.FC<IEasyPagesPageHookProps> = ( props ) => {
   // if ( props.easyPagesSourceProps.pageLayout === 'SharePointFullPage' || props.easyPagesSourceProps.pageLayout === 'SingleWebPartAppPageLayout' ) classNames.push ( 'easy-items-spa' );
   // if ( ( props.easyPagesSourceProps.pinState === 'pinFull' || props.easyPagesSourceProps.pinState === 'pinMini' ) && classNames.indexOf('easy-items-spa') < 0 ) classNames.push ( 'easy-items-spa' );
 
-  const EasyPagesPageElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
+  const ButtonRowProps: ISourceButtonRowProps = {
+    title: '',
+    Labels: AnalyticsTabs,
+    onClick: setTab.bind( this ),
+    selected: tab,
+    infoEle: ``,
+  }
 
-    { EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? null : <Pivot 
-        linkFormat={ props.linkFormat ? props.linkFormat : PivotLinkFormat.links }
-        linkSize={ props.linkSize ? props.linkSize : PivotLinkSize.normal}
-      //   style={{ flexGrow: 1, paddingLeft: '10px' }}
-        onLinkClick= { pivotClick.bind(this) }
-        selectedKey={ tab }
-      >
-      { activeTabs.map( ( tab: string ) => {
-        return <PivotItem key={ tab } itemKey={ tab } headerText={ tab !== InfoTab ? tab : '' } itemIcon={ tab === InfoTab ? InfoIcon : undefined } />
-      })}
-
-    </Pivot>}
-
-    { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
+  const EasyAnalyticsElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
+    { sourceButtonRow( ButtonRowProps ) }
+    {/* { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
       <div className = { [ 'easy-container', EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>
         { filtered.map( link => { return easyLinkElement( link, '_blank'  ) } ) }
       </div>
-    }
+    } */}
   </div>;
 
-  return ( EasyPagesPageElement );
+  return ( EasyAnalyticsElement );
 
 }
 
-export default EasyPagesPageHook;
+export default EasyAnalyticsHook;
