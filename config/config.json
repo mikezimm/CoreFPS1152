@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "fps-core-1152-banner-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/fpsCore1152Banner/FpsCore1152BannerWebPart.js",
+          "manifest": "./src/webparts/fpsCore1152Banner/FpsCore1152BannerWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "FpsCore1152BannerWebPartStrings": "lib/webparts/fpsCore1152Banner/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+  }
+}

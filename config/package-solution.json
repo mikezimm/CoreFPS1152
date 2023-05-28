@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "fps-core-1152-client-side-solution",
+    "id": "e1b59857-7f73-4ab0-bf56-35d678e0cab8",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.15.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "FPSCore1152 description"
+      },
+      "longDescription": {
+        "default": "FPSCore1152 description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "fps-core-1152 Feature",
+        "description": "The feature that activates elements of the fps-core-1152 solution.",
+        "id": "cba3b94f-0e57-4d21-9027-2833b235ef9f",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/fps-core-1152.sppkg"
+  }
+}
