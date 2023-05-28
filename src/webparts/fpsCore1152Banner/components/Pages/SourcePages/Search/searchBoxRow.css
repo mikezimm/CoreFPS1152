@@ -1,0 +1,45 @@
+@import '~office-ui-fabric-react/dist/css/fabric.min.css';
+
+/* .showSearch {
+  transition:all 0.4s ease;
+  transform-origin:top;
+  height:50px;
+  overflow: hidden;
+  padding-bottom: 20px;
+  opacity: 1;
+}
+
+.hideSearch {
+  transition:all 0.4s ease;
+  height:0;
+  overflow: hidden;
+  padding-bottom: 0px;
+  transform:scaleY(0);
+  opacity: 0;
+} */
+/* 
+.searchContainerFlex {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.searchContainerBlock {
+  display: block;
+}
+
+.searchBox {
+  width: 100%;
+}
+
+.searchContainerBlock .searchStatus {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.searchContainerFlex .searchStatus {
+  display: inline-block;
+  white-space: nowrap;
+  padding-left: 20px;
+  padding-right: 60px;
+} */

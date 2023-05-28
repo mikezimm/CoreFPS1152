@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IHelpTable, } from '@mikezimm/fps-library-v2/lib/banner/components/SingleHelpPage/ISinglePageProps';
-import { makeid } from '../../fpsMinIndex';
+import { makeid } from '../../fpsReferences';
 import { escape } from '@microsoft/sp-lodash-subset';
 // import { IRepoLinks,  } from '../../fpsReferences';
 // import { convertIssuesMarkdownStringToSpan } from '../../fpsReferences';

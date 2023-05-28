@@ -11,8 +11,8 @@
 
 // import { encrptMeOriginalTest } from '../fpsReferences';
 
-import { PresetFPSBanner, } from '../fpsMinIndex';
-import { IPreConfigSettings, IAllPreConfigSettings,  } from '../fpsMinIndex';
+import { PresetFPSBanner, } from '../fpsReferences';
+import { IPreConfigSettings, IAllPreConfigSettings,  } from '../fpsReferences';
 
 
 /***

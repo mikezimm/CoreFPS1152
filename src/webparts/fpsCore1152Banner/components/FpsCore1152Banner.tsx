@@ -13,9 +13,9 @@ import FetchBannerX from '@mikezimm/fps-library-v2/lib/banner/bannerX/FetchBanne
 
 import { getWebPartHelpElementBoxTiles } from '../PropPaneHelp/PropPaneHelp';
 import { getBannerPages, } from './HelpPanel/AllContent';
-import { check4Gulp, IBannerPages, IPinMeState, makeid } from "../fpsMinIndex";
+import { check4Gulp, IBannerPages, IPinMeState, makeid } from "../fpsReferences";
 
-import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsMinIndex";
+import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsReferences";
 
 import { ISiteThemes } from "@mikezimm/fps-library-v2/lib/common/commandStyles/ISiteThemeChoices";
 const SiteThemes: ISiteThemes = { dark: styles.fpsSiteThemeDark, light: styles.fpsSiteThemeLight, primary: styles.fpsSiteThemePrimary };

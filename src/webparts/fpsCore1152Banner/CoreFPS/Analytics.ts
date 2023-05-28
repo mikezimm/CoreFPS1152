@@ -14,7 +14,7 @@ import { DisplayMode, } from '@microsoft/sp-core-library';
  */
 
  import { IFpsCore1152BannerProps } from '../components/IFpsCore1152BannerProps';
- import { check4Gulp, ILoadPerformance, } from '../fpsMinIndex';
+ import { check4Gulp, ILoadPerformance, } from '../fpsReferences';
  import { saveAnalytics3, getMinPerformanceString } from '@mikezimm/fps-library-v2/lib/pnpjs/Logging/saveAnalytics';
  import { IZLoadAnalytics, IZSentAnalytics, } from '@mikezimm/fps-library-v2/lib/pnpjs/Logging/interfaces';
 
