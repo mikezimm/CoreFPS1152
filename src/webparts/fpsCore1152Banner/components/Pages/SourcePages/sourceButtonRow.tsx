@@ -12,7 +12,7 @@ export interface ISourceButtonRowProps {
 export function sourceButtonRow( props: ISourceButtonRowProps ): JSX.Element  {
   const { title, Labels, selected, onClick } = props;
 
-  const result: JSX.Element = <div style={{ paddingTop: '10px', fontWeight: 600}} className= { [ 'sourceButtonRow', props.rowClass ].join( ' ' ) } >{ title }
+  const result: JSX.Element = <div style={{ }} className= { [ 'sourceButtonRow', props.rowClass ].join( ' ' ) } >{ title }
   { Labels.map( ( label, index ) => { 
     return <button key={ label } onClick={ () => onClick( index )} 
       className={ index === selected ? 'isSelected' : '' } >{ label }</button> 
