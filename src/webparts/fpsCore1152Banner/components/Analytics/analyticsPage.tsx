@@ -20,7 +20,7 @@ import { createBasePerformanceInit, } from '@mikezimm/fps-library-v2/lib/compone
 import { createPerformanceTableVisitor, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/tables';
 
 // import { getItemsContent, getUsedTabs } from './functions';
-import { IStateSourceA, } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA";
+import { IStateSourceA, IZFetchedAnalytics, } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA";
 import { getAnalyticsSummary } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/fetchAnalytics";
 import { createAnalyticsSourceProps } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/createAnalyticsSourceProps";
 import { compoundArrayFilter } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/functions/compoundArrayFilter";
@@ -34,8 +34,30 @@ import { IEasyPagesSourceProps } from "@mikezimm/fps-library-v2/lib/banner/compo
 import { IAnySourceItem } from '@mikezimm/fps-library-v2/lib/components/molecules/SourceList/IAnyContent';
 import { IStateSource } from '@mikezimm/fps-library-v2/lib/pnpjs/Common/IStateSource';
 import { ISourceButtonRowProps, sourceButtonRow } from '../Pages/SourcePages/sourceButtonRow';
+import Accordion from '@mikezimm/fps-library-v2/lib/components/molecules/Accordion/Accordion';
+import SourcePages from '../Pages/SourcePages/SourcePages';
+import { ezAnalyticsItemHeaders, createItemsRow } from './Row';
+import { check4Gulp, makeid } from '../../fpsReferences';
+import { addSearchMeta1 } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/addSearchMeta1';
+import { addSearchMeta2 } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/addSearchMeta2';
+import { IFPSUser } from '@mikezimm/fps-library-v2/lib/logic/Users/IUserInterfaces';
+import { retrieveFPSUser } from "@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/functions/showTricks";
 
 export type ISourceName =  typeof EasyPagesAnalTab ;
+
+// This should come from src\pnpjs\Common\IStateSource.ts
+export const EmptyStateSource: IStateSourceA = {
+  items: [], 
+  itemsA: [], 
+  index: [], 
+  loaded: false, 
+  refreshId: makeid(5), 
+  status: 'Unknown', 
+  e: null, 
+  misc1: [],
+  meta1: [],
+  meta2: [],
+}
 
 export interface IEasyAnalyticsProps {
   expandedState: boolean;  //Is this particular page expanded
@@ -48,22 +70,11 @@ export interface IEasyAnalyticsHookProps {
   // fpsItemsReturn?: IFpsItemsReturn;
 }
 
-export interface IEasyLink extends Partial<any> {
-  title: string;
-  description: string;
-  url: string;
-  imageUrl: string;
-  imageDesc: string;
-  searchTextLC: string;
-  type: 'current' | 'parent' | 'other' | 'nav';
-  tabs: string[];
-}
-
-export const InfoTab = 'FetchInfoZz79';
-export const InfoIcon = 'History';
-
 export type IAnalyticsTab = 'Summary' | 'Items' | 'Fetch';
 export const AnalyticsTabs: IAnalyticsTab[] = [ 'Summary', 'Items', 'Fetch' ];
+
+export type ITopButtons = 'All' | 'Mine' | 'OtherPeeps' | 'ThisSite' | 'OtherSites';
+export const TopButtons: ITopButtons[] = [ 'All', 'Mine', 'OtherPeeps', 'ThisSite', 'OtherSites' ];
 
 /***
  *    .d8888. d888888b  .d8b.  d8888b. d888888b      db   db  .d88b.   .d88b.  db   dD 
@@ -85,9 +96,12 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
   /**
    * State related to tabs visible items
    */
+
+  const [ FPSUser, setFPSUser ] = useState<IFPSUser>( retrieveFPSUser() );
   const [ tab, setTab ] = useState<number>( 0 );
   const [ sourceProps, setSourceProps ] = useState<ISourceProps>( createAnalyticsSourceProps( analyticsListX ) );
-  const [ stateSource, setStateSource ] = useState<IStateSourceA>( null );
+  const [ stateSource, setStateSource ] = useState<IStateSourceA>( EmptyStateSource );
+  const [ refreshId, setRefreshId ] = useState<string>( makeid( 5 ) );
   const [ preFilteredItems, setPreFilteredItems ] = useState<IAnySourceItem[]>( [] );
   const [ fetchPerformance, setFetchPerformance ] = useState<IPerformanceOp>( null );
   const [ procPerformance, setProcPerformance ] = useState<IPerformanceOp>( null );
@@ -99,8 +113,8 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
   const [ fetched, setFetched ] = useState<boolean>( false );
   // const [ performance, setPerformance ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ) ); //() => createBasePerformanceInit( 1, false )
   const [ performance, setPerformance ] = useState<IPerformanceOp>( null ); //() => createBasePerformanceInit( 1, false )
-  const [ items, setItems ] = useState<IEasyLink[]>( [] );
-  const [ summary, setSummary ] = useState<IEasyLink[]>( [] );
+  const [ items, setItems ] = useState<any[]>( [] );
+  const [ summary, setSummary ] = useState<any[]>( [] );
 
 /***
  *     .o88b. db    db d8888b. d8888b. d88888b d8b   db d888888b      .d8888. d888888b d888888b d88888b 
@@ -119,6 +133,24 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
     if ( expandedState === true && fetched === false ) {
       const getItems = async (): Promise<void> => {
         const itemsResults: IStateSourceA = await getAnalyticsSummary( sourceProps );
+
+        // itemsResults.items = addSearchMeta1( itemsResults.items, sourceProps, null ) as IZFetchedAnalytics[];
+        // itemsResults.items.map( ( item ) => {
+        //   if ( item['Author/Title'] === FPSUser.Title ) 
+        //     { item.searchTextLC += ` || Mine` }
+        //   else { item.searchTextLC += ` || Others` }
+      
+        //   // if ( item['Author/Title'] === FPSUser.Title ) { item.searchTextLC += ` || Mine` }
+        //   //   else { item.searchTextLC += ` || Others` }
+      
+        //   if ( item.siteServerRelativeUrl && window.location.pathname.toLowerCase().indexOf( item.siteServerRelativeUrl.toLowerCase() ) > -1 ) 
+        //     { item.searchTextLC += ` || ThisSite` }
+        //   else { item.searchTextLC += ` || OtherSites` }
+      
+        //   // if ( item['Author/Title'] === FPSEnviro.siteUrl ) { item.searchTextLC += ` || Mine` }
+        //   //   else { item.searchTextLC += ` || Others` }
+        // });
+        console.log( 'EasyAnalyticsResults:', itemsResults );
         // const actualTabs = getUsedTabs( source, itemsResults.items );
         // actualTabs.push( InfoTab );
         // const links: IEasyLink[] = compoundArrayFilter( itemsResults.items, actualTabs[0], '' );
@@ -178,8 +210,51 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
     infoEle: ``,
   }
 
-  const EasyAnalyticsElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
+
+  const MainContent: JSX.Element = <div className={ null }style={{ cursor: 'default', padding: '5px 20px 5px 20px' }}>
     { sourceButtonRow( ButtonRowProps ) }
+  </div>;
+
+  const accordionHeight: number = 100;
+  const InfoElement: JSX.Element = <Accordion 
+    title = { `More information about this tab`}
+    defaultIcon = 'Help'
+    showAccordion = { true }
+    content = { MainContent }
+    contentStyles = { { height: `${accordionHeight}px` } }
+  />;
+
+  const itemsElement = <SourcePages
+    // source={ SourceInfo }
+    primarySource={ sourceProps }
+    itemsPerPage={ 20 }
+    pageWidth={ 1000 }
+    topButtons={ [ ...TopButtons, ...stateSource.meta2 ] }
+    stateSource={ { ...stateSource, ...{ refreshId: refreshId } } }
+    startQty={ 20 }
+    showItemType={ false }
+    debugMode={ null }
+
+    tableHeaderElements={ ezAnalyticsItemHeaders }
+    tableClassName= { 'ezAnalyticsTable' } // styles.itemTable
+    tableHeaderClassName= { [  ].join( ' ' )  } // stylesRow.genericItem
+
+    renderRow={ createItemsRow }
+    // bumpDeepLinks= { this.bumpDeepStateFromComponent.bind(this) }
+    deepProps={ null } //this.state.deepProps
+    // canvasOptions={ this.props.canvasOptions }
+
+    onParentCall={ () => { alert('Hey, parent was called!')} }
+    headingElement={ InfoElement }
+    ageSlider={ true }
+    searchAgeOp={ 'show >' }
+    searchAgeProp={ 'createdAge' }
+    // footerElement={ <div style={{color: 'red', fontWeight: 600 }}>THIS IS the FOOTER ELEMENT</div> }
+  />;
+
+
+  const EasyAnalyticsElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
+    { itemsElement }
     {/* { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
       <div className = { [ 'easy-container', EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>
         { filtered.map( link => { return easyLinkElement( link, '_blank'  ) } ) }

@@ -18,6 +18,7 @@ import { check4Gulp, IBannerPages, IPinMeState, makeid } from "../fpsReferences"
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsReferences";
 
 import { ISiteThemes } from "@mikezimm/fps-library-v2/lib/common/commandStyles/ISiteThemeChoices";
+import EasyAnalyticsHook from './Analytics/analyticsPage';
 const SiteThemes: ISiteThemes = { dark: styles.fpsSiteThemeDark, light: styles.fpsSiteThemeLight, primary: styles.fpsSiteThemePrimary };
 
 //Use this to add more console.logs for this component
@@ -251,10 +252,21 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
 
     />;
 
+    const TestElement: JSX.Element = <EasyAnalyticsHook 
+    easyAnalyticsProps = {{
+      analyticsListX: 'WebPartTesting',
+      expandedState: true,
+    }}
+    easyPagesSourceProps={ this.props.bannerProps.easyPagesSourceProps }
+
+    />
+
     return (
       <section className={`${styles.fpsCore1152Banner} ${hasTeamsContext ? styles.teams : ''}`}>
         { devHeader }
         { Banner }
+        { TestElement }
+
         <div className={styles.welcome}>
           <img  onClick={ this._doSomething.bind(this)} alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
           <h2>Well done, {escape(userDisplayName)}!</h2>

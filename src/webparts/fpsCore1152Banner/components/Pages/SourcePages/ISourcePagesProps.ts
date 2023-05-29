@@ -23,8 +23,8 @@ export interface ISourcePagesProps extends IPageArrowsParentProps {
   resetArrows?: string; //unique Id used to reset arrows to starting position
 
   ageSlider?: boolean;
-  searchAgeProp?: string;
-  searchAgeOp?: 'show >' | 'show <';
+  searchAgeProp?: string;  // Defaults searchAgeProp to 'modifiedAge' if nothing is provided but ageSearch is enabled.
+  searchAgeOp?: 'show >' | 'show <';  // Defaults searchAgeOp to 'show <' if nothing is provided but ageSearch is enabled.
   ageIndexDefault?: number;
 
   startQty: number;  //Number of items to show for paging

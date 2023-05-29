@@ -531,10 +531,19 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
 
     const searchAge = AgeSliderOptions[ Math.abs( ageIndex ) ].maxAge;  //ageIndex is negative... needs inverse to get array element
 
+    // Defaults searchAgeProp to 'modifiedAge' if nothing is provided but ageSearch is enabled.
+    // Defaults searchAgeOp to 'show <' if nothing is provided but ageSearch is enabled.
+    const searchAgeProp: string = this.props.searchAgeProp ? this.props.searchAgeProp : 'modifiedAge';
+    const searchAgeOp: string = this.props.searchAgeOp ? this.props.searchAgeOp : 'show <';
+
     const ageFilteredItems: IAnySourceItem[] = this.state.enableAge === false ? this.props.stateSource.items : [];
     if ( this.state.enableAge === true ) {
       this.props.stateSource.items.map( ( item: IAnySourceItem ) => { 
-        if( item[ this.props.searchAgeProp ] > searchAge ) ageFilteredItems.push( item ); 
+        if ( searchAgeOp === 'show >' ) {
+          if( item[ searchAgeProp ] > searchAge ) ageFilteredItems.push( item ); 
+        } else if ( searchAgeOp === 'show <' ) {
+          if( item[ searchAgeProp ] < searchAge ) ageFilteredItems.push( item ); 
+        } 
        } );
     }
 
