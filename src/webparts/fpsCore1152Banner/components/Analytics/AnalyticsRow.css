@@ -1,17 +1,5 @@
 @import '~office-ui-fabric-react/dist/css/fabric.min.css';
 
-.ezAnalyticsTable {
-  transition:all 0.3s ease;
-  width: 100%;
-}
-
-.ezAnalyticsTable tr:nth-child(even) { background-color: #f2f2f2;}
-
-.ezAnalyticsTable tr:hover { 
-  transition:all 0.3s ease;
-  background: lightgray;
-}
-
 .ezAnalyticsItem {
   padding-top: 15px;
   justify-items: start;
@@ -52,12 +40,48 @@
 .ezAnalyticsItem td:nth-child(6) {
   padding-left: 20px;
 }
-/* Web  */
+/* office  */
 .ezAnalyticsItem td:nth-child(7) {
   padding-left: 20px;
 }
-/* Title  */
+/* Web  */
 .ezAnalyticsItem td:nth-child(8) {
   padding-left: 20px;
 }
+/* Title  */
+.ezAnalyticsItem td:nth-child(9) {
+  padding-left: 20px;
+}
 
+.eZAnalyticsInfo .button, 
+.eZAnalyticsInfo b {
+  border-width: 0px;
+  margin-right: 10px;
+}
+
+.eazyBar {
+  height: 15px;
+  background: rgb(0, 4, 255);
+  margin: 10px;
+  /* width: var(--value); */
+}
+
+.eazyBar::after {
+  padding: 5px;
+ }
+
+ .ezAnalyticsBarRow td {
+    padding-left: 20px;
+ }
+ 
+ .ezAnalyticsBarRow td:nth-child(1) {
+    width: 300px;
+ }
+
+ .ezAnalyticsBarRow th:nth-child(1) {
+    width: 300px;
+ }
+
+ .ezAnalyticsBarCell {
+    padding-left: 0px !important;
+ }

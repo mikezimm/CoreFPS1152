@@ -215,7 +215,7 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
       const classNames = [ 'button' ];
       if ( this.state.topSearch.indexOf( searchObjectFull ) > -1 ) { 
         classNames.push( 'isSelected' ) ;
-        // ADD SELECTED THEMES FROM PARENT
+        classNames.push( this.props.selectedClass ) ;
       }
       /**
        * This topSearch using arrow function did not work
@@ -289,7 +289,7 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
     }
 
     if ( renderAsTable === true ) {
-      tableElement = <table className={ this.props.tableClassName }>
+      tableElement = <table className={ [ 'sourceTable', this.props.tableClassName ].join( ' ' ) }>
         { tableHeaderRow }
         { filtered }
       </table>

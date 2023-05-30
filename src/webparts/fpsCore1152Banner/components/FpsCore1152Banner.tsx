@@ -254,8 +254,10 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
 
     const TestElement: JSX.Element = <EasyAnalyticsHook 
     easyAnalyticsProps = {{
-      analyticsListX: 'WebPartTesting',
+      analyticsListX: this.props.bannerProps.analyticsListX,
       expandedState: true,
+      class1: styles.fpsSiteThemePrimary,
+      class2: styles.fpsSiteThemeDark,
     }}
     easyPagesSourceProps={ this.props.bannerProps.easyPagesSourceProps }
 

@@ -115,7 +115,7 @@ export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152B
     this._environmentMessage = this._getEnvironmentMessage();
 
     this._repoLink = gitRepoDrillDown; //Set as any but will get created in FPSSuperOnOnit
-    // this._analyticsListX = analyticsList;
+    this._analyticsListX = 'TilesCycleTesting';
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
     this._trickyApp = 'FPS UPDATE FPSBaseClass';
@@ -130,7 +130,7 @@ export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152B
     });
   }
 
-  
+
   /***
    *    d8888b. d88888b d8b   db d8888b. d88888b d8888b.       .o88b.  .d8b.  db      db      .d8888. 
    *    88  `8D 88'     888o  88 88  `8D 88'     88  `8D      d8P  Y8 d8' `8b 88      88      88'  YP 

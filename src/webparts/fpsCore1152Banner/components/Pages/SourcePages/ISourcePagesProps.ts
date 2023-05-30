@@ -50,6 +50,8 @@ export interface ISourcePagesProps extends IPageArrowsParentProps {
   tableClassName?: string;
   tableHeaderClassName?: string;
 
+  selectedClass: string; // pass in background and color theme from SPFx for selected buttons
+
   // onParentCall is a pass down from the parent web part component and SHOULD look for this signature.
   onParentCall(command: string, Id: number, type: string, item: IAnySourceItem) : void;
 

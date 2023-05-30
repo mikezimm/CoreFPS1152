@@ -42,6 +42,9 @@ import { addSearchMeta1 } from '@mikezimm/fps-library-v2/lib/components/molecule
 import { addSearchMeta2 } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/addSearchMeta2';
 import { IFPSUser } from '@mikezimm/fps-library-v2/lib/logic/Users/IUserInterfaces';
 import { retrieveFPSUser } from "@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/functions/showTricks";
+import { IAnalyticsSummary, easyAnalyticsSummary, summarizeArrayByKey } from './summarizeArrayByKey';
+import { createBarsRow, ezAnalyticsBarHeaders } from './RowBar';
+import { ISourceRowRender } from '../Pages/SourcePages/ISourceRowRender';
 
 export type ISourceName =  typeof EasyPagesAnalTab ;
 
@@ -62,6 +65,8 @@ export const EmptyStateSource: IStateSourceA = {
 export interface IEasyAnalyticsProps {
   expandedState: boolean;  //Is this particular page expanded
   analyticsListX: string;
+  class1: string;
+  class2: string;
 }
 
 export interface IEasyAnalyticsHookProps {
@@ -70,8 +75,8 @@ export interface IEasyAnalyticsHookProps {
   // fpsItemsReturn?: IFpsItemsReturn;
 }
 
-export type IAnalyticsTab = 'Summary' | 'Items' | 'Fetch';
-export const AnalyticsTabs: IAnalyticsTab[] = [ 'Summary', 'Items', 'Fetch' ];
+export type IAnalyticsTab = 'Items' | 'Offices' | 'Sites' | 'Languages' | 'Dates' | 'Users' ;
+export const AnalyticsTabs: IAnalyticsTab[] = [ 'Items', 'Offices', 'Sites',  'Languages', 'Dates', 'Users', ];
 
 export type ITopButtons = 'All' | 'Mine' | 'OtherPeeps' | 'ThisSite' | 'OtherSites';
 export const TopButtons: ITopButtons[] = [ 'All', 'Mine', 'OtherPeeps', 'ThisSite', 'OtherSites' ];
@@ -104,7 +109,7 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
   const [ refreshId, setRefreshId ] = useState<string>( makeid( 5 ) );
   const [ preFilteredItems, setPreFilteredItems ] = useState<IAnySourceItem[]>( [] );
   const [ fetchPerformance, setFetchPerformance ] = useState<IPerformanceOp>( null );
-  const [ procPerformance, setProcPerformance ] = useState<IPerformanceOp>( null );
+  const [ procPerformance, setProcPerformance ] = useState<IAnalyticsSummary>( null );
   // const [ activeTabs, setActiveTabs ] = useState<string[]>( tabs.length > 0 ? [ ...tabs, ...[ InfoTab ] ]: ['Pages'] );
 
   /**
@@ -134,6 +139,10 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
       const getItems = async (): Promise<void> => {
         const itemsResults: IStateSourceA = await getAnalyticsSummary( sourceProps );
 
+        const EzSummary: IAnalyticsSummary = easyAnalyticsSummary( itemsResults.items, );
+
+        console.log('summaries:', EzSummary );
+
         // itemsResults.items = addSearchMeta1( itemsResults.items, sourceProps, null ) as IZFetchedAnalytics[];
         // itemsResults.items.map( ( item ) => {
         //   if ( item['Author/Title'] === FPSUser.Title ) 
@@ -155,12 +164,13 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
         // actualTabs.push( InfoTab );
         // const links: IEasyLink[] = compoundArrayFilter( itemsResults.items, actualTabs[0], '' );
         // setTab( actualTabs[0] );
+
         setFetched( itemsResults.loaded );
         // setFiltered( links );
         setStateSource( itemsResults );
         // setActiveTabs( actualTabs );
         setFetchPerformance( itemsResults.performanceOp );
-        setProcPerformance( itemsResults.performanceOp );
+        setProcPerformance( EzSummary );
       };
 
       // eslint-disable-next-line no-void
@@ -205,13 +215,13 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
   const ButtonRowProps: ISourceButtonRowProps = {
     title: '',
     Labels: AnalyticsTabs,
-    onClick: setTab.bind( this ),
+    onClick: stateSource.loaded !== true ? undefined : setTab.bind( this ),
     selected: tab,
     infoEle: ``,
+    selectedClass: props.easyAnalyticsProps.class1,
   }
 
-
-  const MainContent: JSX.Element = <div className={ null }style={{ cursor: 'default', padding: '5px 20px 5px 20px' }}>
+  const MainContent: JSX.Element = <div className={ 'eZAnalyticsInfo' }style={{ cursor: 'default', padding: '5px 20px 5px 20px' }}>
     { sourceButtonRow( ButtonRowProps ) }
   </div>;
 
@@ -224,27 +234,37 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
     contentStyles = { { height: `${accordionHeight}px` } }
   />;
 
+
+  const useTopButtons: string[] = tab === 0 ? [ ...TopButtons, ...stateSource.meta2 ] : [];
+  const useThisState: IStateSourceA = tab === 0 ? stateSource : { ...stateSource, ...{ items: procPerformance[ AnalyticsTabs[ tab ] as 'Sites' ].summaries } , refreshId: makeid( 5 ) } as any;
+  const useHeaders: string[] = tab === 0 ? ezAnalyticsItemHeaders : ezAnalyticsBarHeaders;
+  const renderRowsAsThese = tab === 0 ? createItemsRow : createBarsRow;
+
+  console.log('analyticsHookState:', AnalyticsTabs[ tab ], tab, useThisState );
+
   const itemsElement = <SourcePages
     // source={ SourceInfo }
     primarySource={ sourceProps }
     itemsPerPage={ 20 }
     pageWidth={ 1000 }
-    topButtons={ [ ...TopButtons, ...stateSource.meta2 ] }
-    stateSource={ { ...stateSource, ...{ refreshId: refreshId } } }
+    topButtons={ useTopButtons }
+    // stateSource={ { ...stateSource, ...{ refreshId: refreshId } } }
+    stateSource={ useThisState }
     startQty={ 20 }
     showItemType={ false }
     debugMode={ null }
 
-    tableHeaderElements={ ezAnalyticsItemHeaders }
+    tableHeaderElements={ useHeaders }
     tableClassName= { 'ezAnalyticsTable' } // styles.itemTable
     tableHeaderClassName= { [  ].join( ' ' )  } // stylesRow.genericItem
+    selectedClass={ props.easyAnalyticsProps.class1 }
 
-    renderRow={ createItemsRow }
+    renderRow={ renderRowsAsThese }
     // bumpDeepLinks= { this.bumpDeepStateFromComponent.bind(this) }
     deepProps={ null } //this.state.deepProps
     // canvasOptions={ this.props.canvasOptions }
 
-    onParentCall={ () => { alert('Hey, parent was called!')} }
+    onParentCall={ () => { alert('Hey, parent was called!') } }
     headingElement={ InfoElement }
     ageSlider={ true }
     searchAgeOp={ 'show >' }
@@ -253,7 +273,7 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
   />;
 
 
-  const EasyAnalyticsElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
+  const EasyAnalyticsElement: JSX.Element = <div className = { classNames.join( '' ) } style={ styles }>
     { itemsElement }
     {/* { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
       <div className = { [ 'easy-container', EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>
