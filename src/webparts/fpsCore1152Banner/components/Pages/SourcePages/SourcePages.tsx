@@ -18,7 +18,7 @@ import { makeid } from '@mikezimm/fps-library-v2/lib/logic/Strings/guids';
 
 import { getFilteredItems } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/getFilteredV1';
 // import { ContentPanel, } from './SourcePanelContent';
-import SourceSearchHook from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/Component/SearchBoxRow';
+import SourceSearchAgeHook from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/Component/SearchBoxRowAge';
 import { IFPSAgeSliderProps } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeTypes';
 import { FPSAgeSliderOptions7Years } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeSliderOptions7YearPart';
 import { FPSFetchSpinner } from './FPSFetchSpinner';
@@ -299,18 +299,6 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
       </table>
     }
 
-    const searchBox =  <SourceSearchHook 
-      _onSearchChange={ this._onSearchChange.bind( this ) }
-      searchTime={ this.state.searchTime }
-      searchText={ searchText }
-      itemsPerPage={ this._itemsPerPage }
-      itemCount={ this.state.filtered.length }
-      _updateFirstLastVisible={ this._updateFirstLastVisible.bind(this) }
-      debugMode={ this.props.debugMode }
-      resetArrows={ this.state.resetArrows }
-      layout={ 'flex' }
-    />
-
     const AgeSliderWPProps: IFPSAgeSliderProps = this.props.ageSlider === false ? undefined : {
       FPSAgeIsVisible: true,
       FPSAgeColumnName: 'modifiedAge',
@@ -335,6 +323,19 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
       <div className={ 'sourceDesc' }>{ primarySource.searchSourceDesc }</div>
       { gotoListLink }
     </div>;
+
+    const searchBox =  <SourceSearchAgeHook 
+      _onSearchChange={ this._onSearchChange.bind( this ) }
+      searchTime={ this.state.searchTime }
+      searchText={ searchText }
+      itemsPerPage={ this._itemsPerPage }
+      itemCount={ this.state.filtered.length }
+      _updateFirstLastVisible={ this._updateFirstLastVisible.bind(this) }
+      debugMode={ this.props.debugMode }
+      resetArrows={ this.state.resetArrows }
+      layout={ 'grid' }
+      ageElement={ AgeSlider }
+    />;
 
     // const deepHistory = debugMode !== true ? null :  
     //   <ReactJson src={ this.state.filtered } name={ primarySource.listTitle } collapsed={ false } displayDataTypes={ false } displayObjectSize={ false } enableClipboard={ true } style={{ padding: '20px 0px' }} theme= { 'rjv-default' } indentWidth={ 2}/>;
@@ -382,8 +383,11 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
               { debugContent }
               { this.props.headingElement }
               { searchSourceDesc }
+              {/* <div> */}
               { searchBox }
-              { AgeSlider }
+                {/* { AgeSlider }
+              </div> */}
+
               { topSearchContent }
               { renderAsTable === true ? tableElement : undefined }
               { renderAsTable === false ? filtered : undefined }

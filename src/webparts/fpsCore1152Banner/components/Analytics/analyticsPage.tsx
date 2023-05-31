@@ -51,7 +51,10 @@ export type ISourceName =  typeof EasyPagesAnalTab ;
 // This should come from src\pnpjs\Common\IStateSource.ts
 export const EmptyStateSource: IStateSourceA = {
   items: [], 
-  itemsA: [], 
+  itemsA: [],
+  itemsS: [],
+  itemsO: [],
+  itemsP: [],
   index: [], 
   loaded: false, 
   refreshId: makeid(5), 
@@ -239,7 +242,7 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
     selectedClass: props.easyAnalyticsProps.class1,
   }
 
-  const MainContent: JSX.Element = <div className={ 'eZAnalyticsInfo' }style={{ cursor: 'default', padding: '5px 20px 5px 20px' }}>
+  const MainContent: JSX.Element = <div className={ 'eZAnalyticsInfo' }style={{ cursor: 'default', padding: '5px 0px 5px 0px' }}>
     { sourceButtonRow( ButtonRowProps ) }
     { !fetchPerformance ? undefined : <div>{ createPerformanceRows( { ops: { fetch: fetchPerformance } } as ILoadPerformance, [ 'fetch' ] ) }</div> }
     { !procPerformance  ? undefined : <div>{ createPerformanceRows( { ops: { process0: procPerformance.performanceOp } } as ILoadPerformance, [ 'process0' ] ) }</div> }

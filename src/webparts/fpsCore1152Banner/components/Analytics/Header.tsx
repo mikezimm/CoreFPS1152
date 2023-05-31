@@ -76,7 +76,7 @@
 //     setTeachBubble( null );
 //   }
 
-//   const updateTour = ( newBubble: number ): void => {
+//   const updateTour = ( newBubble: number ): void => { onParentCall( 'GoToItems', -1, '', item )
 //     const saveBubble = newBubble + 0;
 //     setLastBubble( saveBubble );
 //     setTeachBubble( saveBubble );
