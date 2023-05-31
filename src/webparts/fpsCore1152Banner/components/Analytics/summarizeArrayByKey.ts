@@ -4,6 +4,8 @@ import { IAnySourceItem } from "@mikezimm/fps-library-v2/lib/components/molecule
 import { IPerformanceOp, makeid, sortObjectArrayByNumberKey } from "../../fpsReferences";
 import { IPerformanceSettings } from "@mikezimm/fps-library-v2/lib/components/molecules/Performance/IPerformanceSettings";
 import { startPerformOpV2, updatePerformanceEndV2 } from "@mikezimm/fps-library-v2/lib/components/molecules/Performance/functions";
+import { getBestAnalyticsLinkAndIcon } from "./getBestAnalyticsLinkAndIcon";
+import { IZFetchedAnalytics } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA";
 
 
 export interface IOjbectKeySummaryItem {
@@ -36,6 +38,7 @@ export interface IObjArraySummary {
 }
 
 export function createKeyObject(keyZ: string, prime: string, labelV: string, otherKeys: string[]): IOjbectKeySummaryItem {
+  prime = prime ? prime : `<< EMPTY ${ keyZ } >>`;
   const result: IOjbectKeySummaryItem = {
     primaryKey: prime,
     link: '',
@@ -68,6 +71,7 @@ export interface IAnalyticsSummary {
   Languages: IObjArraySummary;
   Users: IObjArraySummary;
   Dates: IObjArraySummary;
+  CodeVersion: IObjArraySummary;
   performanceOp: IPerformanceOp;
   refreshId: string;
   stats: {
@@ -77,6 +81,7 @@ export interface IAnalyticsSummary {
     Languages: number;
     Users: number;
     Dates: number;
+    CodeVersion: number;
   }
 }
 
@@ -85,12 +90,13 @@ export function easyAnalyticsSummary( items: IAnySourceItem[] ) : IAnalyticsSumm
   const performanceSettings: IPerformanceSettings = {  label: 'summary', updateMiliseconds: true, includeMsStr: true, op: 'analyze' };
   let performanceOp = performanceSettings ? startPerformOpV2( performanceSettings ) : null;
 
-  const Titles = summarizeArrayByKey( items, 'Titles', 'Title',[ 'Author/Office', 'Author/Title', 'language' ] );
-  const Sites = summarizeArrayByKey( items, 'SiteTitle', 'Title',[ 'Author/Office', 'Author/Title', 'language' ] );
-  const Offices = summarizeArrayByKey( items, 'Author/Office', 'Title',[ 'SiteTitle', 'Author/Title', 'language' ] );
-  const Languages = summarizeArrayByKey( items, 'language', 'Title',[ 'SiteTitle', 'Author/Title', 'Author/Office' ] );
-  const Users = summarizeArrayByKey( items, 'Author/Title', 'Title',[ 'Author/Office', 'SiteTitle', 'language' ] );
-  const Dates = summarizeArrayByKey( items, 'createdAge', 'Title',[ 'Author/Office', 'SiteTitle', 'language', 'Author/Title' ] );
+  const Titles = summarizeArrayByKey( items, 'Titles', 'Title',[ 'Author/Office', 'Author/Title', 'language', 'CodeVersion' ] );
+  const Sites = summarizeArrayByKey( items, 'SiteTitle', 'Title',[ 'Author/Office', 'Author/Title', 'language', 'CodeVersion' ] );
+  const Offices = summarizeArrayByKey( items, 'Author/Office', 'Title',[ 'SiteTitle', 'Author/Title', 'language', 'CodeVersion' ] );
+  const Languages = summarizeArrayByKey( items, 'language', 'Title',[ 'SiteTitle', 'Author/Title', 'Author/Office', 'CodeVersion' ] );
+  const Users = summarizeArrayByKey( items, 'Author/Title', 'Title',[ 'Author/Office', 'SiteTitle', 'language', 'CodeVersion' ] );
+  const Dates = summarizeArrayByKey( items, 'createdAge', 'Title',[ 'Author/Office', 'SiteTitle', 'language', 'Author/Title', 'CodeVersion' ] );
+  const CodeVersion = summarizeArrayByKey( items, 'CodeVersion', 'Title',[ 'Author/Office', 'SiteTitle', 'language', 'Author/Title', 'createdAge' ] );
 
   performanceOp = updatePerformanceEndV2( { op: performanceOp, updateMiliseconds: performanceSettings.updateMiliseconds, count: items.length * 6 });
 
@@ -101,6 +107,7 @@ export function easyAnalyticsSummary( items: IAnySourceItem[] ) : IAnalyticsSumm
     Languages: Languages,
     Users: Users,
     Dates: Dates,
+    CodeVersion: CodeVersion,
     performanceOp: performanceOp,
     refreshId: makeid(5),
     stats: {
@@ -110,6 +117,7 @@ export function easyAnalyticsSummary( items: IAnySourceItem[] ) : IAnalyticsSumm
       Languages: Languages.keys.length,
       Users: Users.keys.length,
       Dates: Dates.keys.length,
+      CodeVersion: CodeVersion.keys.length,
     }
   }
 
@@ -140,8 +148,13 @@ export function summarizeArrayByKey( items: IAnySourceItem[], key: string, valPr
     if (idx < 0) {
       idx = summary.keys.length;
       summary.keys.push( itemValue );
-      summary.summaries.push(createKeyObject(key,  keyIsDate === true ? getDateLabel(itemValue) : itemValue, valProp, otherKeys));
+      const keyItem: IOjbectKeySummaryItem = createKeyObject(key,  keyIsDate === true ? getDateLabel(itemValue) : itemValue, valProp, otherKeys );
+
+      // Only add link if it is for a site.
+      if ( key === 'SiteTitle' ) keyItem.link = getBestAnalyticsLinkAndIcon( item as IZFetchedAnalytics, false, [ 'SiteLink', 'PageLink', 'PageURL' ] ).linkUrl;
+      summary.summaries.push( keyItem );
     }
+
     item.primeIdx = idx0;
     const thisSum = summary.summaries[idx];
     thisSum.countT++;
@@ -177,7 +190,7 @@ export function summarizeArrayByKey( items: IAnySourceItem[], key: string, valPr
   const countMax: number = Math.max( ...summary.summaries.map( sum => { return sum.countT }) );
   if ( sumCountT !== 0 ) summary.summaries.map( summary => { summary.percentT = ( summary.countT / sumCountT ) * 100 });
   if ( countMax !== 0 )  summary.summaries.map( summary => { summary.percentB = ( summary.countT / countMax ) * 100 });
-  summary.summaries.map( summary => { summary.searchTextLC = summary.primaryKey });
+  summary.summaries.map( summary => { summary.searchTextLC = summary.primaryKey.toLowerCase() });
   
   return summary;
 

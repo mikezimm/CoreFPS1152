@@ -59,6 +59,11 @@
   margin-right: 10px;
 }
 
+.eZAnalyticsInfo { 
+  display: flex;
+  justify-content: space-between;
+}
+
 .eazyBar {
   height: 15px;
   background: rgb(0, 4, 255);

@@ -17,7 +17,7 @@ import { sortObjectArrayByStringKeyCollator } from '@mikezimm/fps-library-v2/lib
 import { ILoadPerformance, IPerformanceOp, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/IPerformance';
 import { createBasePerformanceInit, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/functions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createPerformanceTableVisitor, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/tables';
+import { createPerformanceRows, createPerformanceTableVisitor, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/tables';
 
 // import { getItemsContent, getUsedTabs } from './functions';
 import { IStateSourceA, IZFetchedAnalytics, } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA";
@@ -42,7 +42,7 @@ import { addSearchMeta1 } from '@mikezimm/fps-library-v2/lib/components/molecule
 import { addSearchMeta2 } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/addSearchMeta2';
 import { IFPSUser } from '@mikezimm/fps-library-v2/lib/logic/Users/IUserInterfaces';
 import { retrieveFPSUser } from "@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/functions/showTricks";
-import { IAnalyticsSummary, easyAnalyticsSummary, summarizeArrayByKey } from './summarizeArrayByKey';
+import { IAnalyticsSummary, IOjbectKeySummaryItem, easyAnalyticsSummary, summarizeArrayByKey } from './summarizeArrayByKey';
 import { createBarsRow, ezAnalyticsBarHeaders } from './RowBar';
 import { ISourceRowRender } from '../Pages/SourcePages/ISourceRowRender';
 
@@ -75,11 +75,11 @@ export interface IEasyAnalyticsHookProps {
   // fpsItemsReturn?: IFpsItemsReturn;
 }
 
-export type IAnalyticsTab = 'Items' | 'Offices' | 'Sites' | 'Languages' | 'Dates' | 'Users' ;
-export const AnalyticsTabs: IAnalyticsTab[] = [ 'Items', 'Offices', 'Sites',  'Languages', 'Dates', 'Users', ];
+export type IAnalyticsTab = 'Items' | 'Offices' | 'Sites' | 'Languages' | 'Dates' | 'Users' | 'CodeVersion' ;
+export const AnalyticsTabs: IAnalyticsTab[] = [ 'Items', 'Offices', 'Sites',  'Languages', 'Dates', 'Users', 'CodeVersion' ];
 
-export type ITopButtons = 'All' | 'Mine' | 'OtherPeeps' | 'ThisSite' | 'OtherSites';
-export const TopButtons: ITopButtons[] = [ 'All', 'Mine', 'OtherPeeps', 'ThisSite', 'OtherSites' ];
+export type ITopButtons = 'Mine' | 'OtherPeeps' | 'ThisSite' | 'OtherSites';
+export const TopButtons: ITopButtons[] = [ 'Mine', 'OtherPeeps', 'ThisSite', 'OtherSites' ];
 
 /***
  *    .d8888. d888888b  .d8b.  d8888b. d888888b      db   db  .d88b.   .d88b.  db   dD 
@@ -102,12 +102,13 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
    * State related to tabs visible items
    */
 
-  const [ FPSUser, setFPSUser ] = useState<IFPSUser>( retrieveFPSUser() );
+  // const [ FPSUser, setFPSUser ] = useState<IFPSUser>( retrieveFPSUser() );
   const [ tab, setTab ] = useState<number>( 0 );
+  const [ button1, setButton1 ] = useState<string>( '' ); // SourcePages first filter button
   const [ sourceProps, setSourceProps ] = useState<ISourceProps>( createAnalyticsSourceProps( analyticsListX ) );
   const [ stateSource, setStateSource ] = useState<IStateSourceA>( EmptyStateSource );
-  const [ refreshId, setRefreshId ] = useState<string>( makeid( 5 ) );
-  const [ preFilteredItems, setPreFilteredItems ] = useState<IAnySourceItem[]>( [] );
+  // const [ refreshId, setRefreshId ] = useState<string>( makeid( 5 ) );
+  // const [ preFilteredItems, setPreFilteredItems ] = useState<IAnySourceItem[]>( [] );
   const [ fetchPerformance, setFetchPerformance ] = useState<IPerformanceOp>( null );
   const [ procPerformance, setProcPerformance ] = useState<IAnalyticsSummary>( null );
   // const [ activeTabs, setActiveTabs ] = useState<string[]>( tabs.length > 0 ? [ ...tabs, ...[ InfoTab ] ]: ['Pages'] );
@@ -117,9 +118,9 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
    */
   const [ fetched, setFetched ] = useState<boolean>( false );
   // const [ performance, setPerformance ] = useState<ILoadPerformance>( () => createBasePerformanceInit( 1, false ) ); //() => createBasePerformanceInit( 1, false )
-  const [ performance, setPerformance ] = useState<IPerformanceOp>( null ); //() => createBasePerformanceInit( 1, false )
-  const [ items, setItems ] = useState<any[]>( [] );
-  const [ summary, setSummary ] = useState<any[]>( [] );
+  // const [ performance, setPerformance ] = useState<IPerformanceOp>( null ); //() => createBasePerformanceInit( 1, false )
+  // const [ items, setItems ] = useState<any[]>( [] );
+  // const [ summary, setSummary ] = useState<any[]>( [] );
 
 /***
  *     .o88b. db    db d8888b. d8888b. d88888b d8b   db d888888b      .d8888. d888888b d888888b d88888b 
@@ -182,6 +183,23 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
     }
 
   }, [ expandedState ] );
+
+  // const updateTour = ( newBubble: number ): void => {
+  const onParentCall = (command: 'GoToItems', Id: number, type: string, item: IOjbectKeySummaryItem ) : void => { // onParentCall( 'GoToItems', -1, '', item )
+
+    if ( item.keyZ === 'createdAge' || ( item.primaryKey && item.primaryKey.indexOf('<< EMPTY') === 0 ) ||  command !== 'GoToItems' ) {
+      console.log( 'Invalid onParentCall' );
+      return
+    }
+    console.log( 'Prefiltering items: onParentCall', item );
+    setButton1( item.primaryKey );
+    setTab( 0 );
+  }
+
+  const setTabClick = ( Id: number ) : void => { // onParentCall( 'GoToItems', -1, '', item )
+    setButton1( '' );
+    setTab( Id );
+  }
   /***
  *     .d88b.  d8b   db       .o88b. db      d888888b  .o88b. db   dD .d8888. 
  *    .8P  Y8. 888o  88      d8P  Y8 88        `88'   d8P  Y8 88 ,8P' 88'  YP 
@@ -215,7 +233,7 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
   const ButtonRowProps: ISourceButtonRowProps = {
     title: '',
     Labels: AnalyticsTabs,
-    onClick: stateSource.loaded !== true ? undefined : setTab.bind( this ),
+    onClick: stateSource.loaded !== true ? undefined : setTabClick.bind( this ),
     selected: tab,
     infoEle: ``,
     selectedClass: props.easyAnalyticsProps.class1,
@@ -223,6 +241,8 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
 
   const MainContent: JSX.Element = <div className={ 'eZAnalyticsInfo' }style={{ cursor: 'default', padding: '5px 20px 5px 20px' }}>
     { sourceButtonRow( ButtonRowProps ) }
+    { !fetchPerformance ? undefined : <div>{ createPerformanceRows( { ops: { fetch: fetchPerformance } } as ILoadPerformance, [ 'fetch' ] ) }</div> }
+    { !procPerformance  ? undefined : <div>{ createPerformanceRows( { ops: { process0: procPerformance.performanceOp } } as ILoadPerformance, [ 'process0' ] ) }</div> }
   </div>;
 
   const accordionHeight: number = 100;
@@ -235,9 +255,10 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
   />;
 
 
-  const useTopButtons: string[] = tab === 0 ? [ ...TopButtons, ...stateSource.meta2 ] : [];
+  const useTopButtons: string[] = tab === 0 ? [ button1, ...TopButtons.filter((str) => str !== button1 ), ...stateSource.meta2.filter((str) => str !== button1 ) ] : [];
   const useThisState: IStateSourceA = tab === 0 ? stateSource : { ...stateSource, ...{ items: procPerformance[ AnalyticsTabs[ tab ] as 'Sites' ].summaries } , refreshId: makeid( 5 ) } as any;
   const useHeaders: string[] = tab === 0 ? ezAnalyticsItemHeaders : ezAnalyticsBarHeaders;
+  const useSgeSlider: boolean = tab === 0 ? true : false;
   const renderRowsAsThese = tab === 0 ? createItemsRow : createBarsRow;
 
   console.log('analyticsHookState:', AnalyticsTabs[ tab ], tab, useThisState );
@@ -264,9 +285,9 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
     deepProps={ null } //this.state.deepProps
     // canvasOptions={ this.props.canvasOptions }
 
-    onParentCall={ () => { alert('Hey, parent was called!') } }
+    onParentCall={ onParentCall.bind(this) }
     headingElement={ InfoElement }
-    ageSlider={ true }
+    ageSlider={ useSgeSlider }
     searchAgeOp={ 'show >' }
     searchAgeProp={ 'createdAge' }
     // footerElement={ <div style={{color: 'red', fontWeight: 600 }}>THIS IS the FOOTER ELEMENT</div> }

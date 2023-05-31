@@ -17,6 +17,7 @@ import { DisplayMode, } from '@microsoft/sp-core-library';
  import { check4Gulp, ILoadPerformance, } from '../fpsReferences';
  import { saveAnalytics3, getMinPerformanceString } from '@mikezimm/fps-library-v2/lib/pnpjs/Logging/saveAnalytics';
  import { IZLoadAnalytics, IZSentAnalytics, } from '@mikezimm/fps-library-v2/lib/pnpjs/Logging/interfaces';
+import { panelVersionNumber } from '../components/HelpPanel/About';
 
  /***
   *    db       .d88b.   .o88b.  .d8b.  db      
@@ -138,6 +139,7 @@ export function saveViewAnalytics( Title: string, Result: string, parentProps: I
         // zzzRichText3: zzzRichText3,
 
         performance: performance,
+        CodeVersion: panelVersionNumber,
 
         FPSProps: FPSProps,
 

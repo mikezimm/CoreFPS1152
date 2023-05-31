@@ -15,7 +15,7 @@ import { IOjbectKeySummaryItem } from './summarizeArrayByKey';
 require ('./AnalyticsRow.css');
 require ('@mikezimm/fps-styles/dist/fpsGeneralCSS.css');
 
-export const ezAnalyticsBarHeaders: string[] = [ 'Item', 'Count', '', 'Avg', 'Sum', ];
+export const ezAnalyticsBarHeaders: string[] = [ 'Item', 'Count', 'Count pareto', 'TBD-Avg', 'TBD-Sum', ];
 
 export function createBarsRow( props: ISourceRowRender ): JSX.Element { // eslint-disable-line @typescript-eslint/no-explicit-any
   const { item, onClick, searchText } = props; // details, showItemType, onOpenPanel
@@ -25,11 +25,13 @@ export function createBarsRow( props: ISourceRowRender ): JSX.Element { // eslin
 
   const { primaryKey, percentB, countI, link } = thisItem; // , BannerImageUrl, PromotedState
 
-  const siteUrl = item.SiteLink ? `${item.SiteLink.Url}` : '';
+  const isLink: boolean = link || item.keyZ !== 'createdAge' ? true : false;
 
   const row = <tr className={ 'ezAnalyticsBarRow' } onClick = { () => onClick( -1 , 'generic', item ) }>
-    <td title={ null } style={{ maxWidth: '300px' }}>{ getHighlightedText( primaryKey, searchText ) }</td>
-    <td title={ null } >{ countI }</td>
+    {/* <td className={ link ? 'fps-gen-goToLink' : '' } title={ link } onClick= { link ? () => { window.open( link ,'_blank') }  : undefined }>{ getHighlightedText( primaryKey, searchText ) }</td> */}
+    <td className={ isLink === true ? 'fps-gen-goToLink' : '' } title={ link }
+      onClick= { isLink === true ? () => props.onParentCall( 'GoToItems', -1, '', item ) : undefined } >{ getHighlightedText( primaryKey, searchText ) }</td>
+    <td style={ { width: '50px' } } >{ countI }</td>
     <td title={ null } className={ 'ezAnalyticsBarCell' } ><div className={ 'eazyBar' } style={{ 'width': `calc(${percentB}% - 20px)` } }/></td>
   </tr>;
 

@@ -210,20 +210,24 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
     const topSearch: JSX.Element[] = [];  //All major future to be grid components
 
     topButtons.map( searchObjectFull => {
-      const searchObjectArray = searchObjectFull.split('==');
-      const searchObject = searchObjectArray[0];
-      const classNames = [ 'button' ];
-      if ( this.state.topSearch.indexOf( searchObjectFull ) > -1 ) { 
-        classNames.push( 'isSelected' ) ;
-        classNames.push( this.props.selectedClass ) ;
+      // Added this if then so only buttons with valid value will create button... empty, undefined and null will not create button
+      if ( searchObjectFull ) {
+        const searchObjectArray = searchObjectFull.split('==');
+        const searchObject = searchObjectArray[0];
+        const classNames = [ 'button' ];
+        if ( this.state.topSearch.indexOf( searchObjectFull ) > -1 ) { 
+          classNames.push( 'isSelected' ) ;
+          classNames.push( this.props.selectedClass ) ;
+        }
+        /**
+         * This topSearch using arrow function did not work
+         */
+        // topSearch.push( <div className={ classNames.join(' ') } style={ null }  onClick={ () =>this._clickTop.bind( searchObject )}>{ searchObject }</div> );
+        topSearch.push( <div className={ classNames.join(' ') } style={ null }  
+          onClick={ this._clickTop.bind( this, searchObjectFull )} 
+          title={ searchObjectArray.length > 0 ? searchObjectFull : '' }>{ searchObject }</div> ); //Only show Title prop if the button has special search 
       }
-      /**
-       * This topSearch using arrow function did not work
-       */
-      // topSearch.push( <div className={ classNames.join(' ') } style={ null }  onClick={ () =>this._clickTop.bind( searchObject )}>{ searchObject }</div> );
-      topSearch.push( <div className={ classNames.join(' ') } style={ null }  
-        onClick={ this._clickTop.bind( this, searchObjectFull )} 
-        title={ searchObjectArray.length > 0 ? searchObjectFull : '' }>{ searchObject }</div> ); //Only show Title prop if the button has special search 
+
     });
 
     const topSearchContent = <div className={ 'topSearch' } style={ { background : debugMode === true ? 'pink' : null }} >{ topSearch }</div>;
