@@ -9,9 +9,9 @@ export const panelVersionNumber = '2023-05-28 -  0.0.2'; //Added to show in pane
 export function aboutTable( bannerProps: IWebpartBannerProps ): { table: IHelpTable } {
 
     const table : IHelpTable  = {
-        heading: 'Version History',
-        headers: ['Date','Version','Focus'],
-        rows: [],
+      heading: 'Version History',
+      headers: ['Date','Version','Focus'],
+      rows: [],
     };
 
     /**

@@ -46,6 +46,8 @@ export interface ISourcePagesProps extends IPageArrowsParentProps {
 
   disableSpinner?: boolean; // default === false.  Set to true to disable fetching spinner
 
+  sourcePageClassName?: string;
+  
   tableHeaderElements?: ITableHeaderElement[];
   tableClassName?: string;
   tableHeaderClassName?: string;

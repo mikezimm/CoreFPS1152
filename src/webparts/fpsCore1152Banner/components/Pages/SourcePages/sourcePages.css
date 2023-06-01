@@ -17,8 +17,6 @@
 /* Could commonize with searchBoxRow.css */
 .searchSourceStatus {
   /* @extend .floatRight; not neccessary */
-  display: inline-block;
-  white-space: nowrap;
   padding-left: 20px;
   padding-right: 60px;
 }

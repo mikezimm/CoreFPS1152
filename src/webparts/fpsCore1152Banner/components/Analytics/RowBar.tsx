@@ -3,13 +3,7 @@
 import * as React from 'react';
 
 import { getHighlightedText } from '@mikezimm/fps-library-v2/lib/components/atoms/Elements/HighlightedText';
-import { IAnySourceItem } from '@mikezimm/fps-library-v2/lib/components/molecules/SourceList/IAnyContent';
-
-// import { ISourceRowRender } from '../SourcePages/ISourceRowRender';
-import { buildClickableIcon } from '@mikezimm/fps-library-v2/lib/components/atoms/Icons/stdIconsBuildersV02';
-import { IZFetchedAnalytics } from '@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA';
 import { ISourceRowRender } from '../Pages/SourcePages/ISourceRowRender';
-import { addGulpParam, removeGulpParam } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/GulpLinks';
 import { IOjbectKeySummaryItem } from './summarizeArrayByKey';
 
 require ('./AnalyticsRow.css');

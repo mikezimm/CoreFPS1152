@@ -296,7 +296,8 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
   }
 
   private _doSomething(): void {
-    const result = this._updatePerformance();
+    // const result = this._updatePerformance();
+    return;
   }
 
 }

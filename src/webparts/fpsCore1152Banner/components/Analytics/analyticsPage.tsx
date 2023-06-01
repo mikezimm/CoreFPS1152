@@ -5,46 +5,29 @@ import { useState, useEffect } from 'react';
 
 require('@mikezimm/fps-styles/dist/easypages.css');
 
-// import styles from '../PropPaneCols.module.scss';
-import { WebPartContextCopy_15_2 } from '@mikezimm/fps-library-v2/lib/common/interfaces/@msft/1.15.2/WebPartContext'; // Used in:  IEasyPagesSourceProps
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { sortObjectArrayByStringKeyCollator } from '@mikezimm/fps-library-v2/lib/logic/Arrays/sorting/objects';
-
 // import { ISupportedHost } from '@mikezimm/fps-library-v2/lib/common/interfaces/@msft/1.15.2/layout';
 // import { IPinMeState } from "../../features/PinMe/Interfaces";
 
 import { ILoadPerformance, IPerformanceOp, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/IPerformance';
-import { createBasePerformanceInit, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/functions';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createPerformanceRows, createPerformanceTableVisitor, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/tables';
+import { createPerformanceRows, } from '@mikezimm/fps-library-v2/lib/components/molecules/Performance/tables';
 
 // import { getItemsContent, getUsedTabs } from './functions';
-import { IStateSourceA, IZFetchedAnalytics, } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA";
+import { IStateSourceA, } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA";
 import { getAnalyticsSummary } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/fetchAnalytics";
 import { createAnalyticsSourceProps } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/createAnalyticsSourceProps";
-import { compoundArrayFilter } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/functions/compoundArrayFilter";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { EasyPagesAnalTab,  } from '@mikezimm/fps-library-v2/lib/banner/components/EasyPages/interfaces/epTypes';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-// import { prepSourceColumns } from '@mikezimm/fps-library-v2/lib/pnpjs/SourceItems/index';
-import { prepSourceColumns } from '@mikezimm/fps-library-v2/lib/pnpjs/SourceItems/prepSourceColumns';
 import { ISourceProps } from '@mikezimm/fps-library-v2/lib/pnpjs/SourceItems/Interface';
 import { IEasyPagesSourceProps } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/interfaces/IEasyPagesPageProps";
-import { IAnySourceItem } from '@mikezimm/fps-library-v2/lib/components/molecules/SourceList/IAnyContent';
-import { IStateSource } from '@mikezimm/fps-library-v2/lib/pnpjs/Common/IStateSource';
 import { ISourceButtonRowProps, sourceButtonRow } from '../Pages/SourcePages/sourceButtonRow';
 import Accordion from '@mikezimm/fps-library-v2/lib/components/molecules/Accordion/Accordion';
 import SourcePages from '../Pages/SourcePages/SourcePages';
 import { ezAnalyticsItemHeaders, createItemsRow } from './Row';
-import { check4Gulp, makeid } from '../../fpsReferences';
-import { addSearchMeta1 } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/addSearchMeta1';
-import { addSearchMeta2 } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/addSearchMeta2';
-import { IFPSUser } from '@mikezimm/fps-library-v2/lib/logic/Users/IUserInterfaces';
-import { retrieveFPSUser } from "@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/functions/showTricks";
-import { IAnalyticsSummary, IOjbectKeySummaryItem, easyAnalyticsSummary, summarizeArrayByKey } from './summarizeArrayByKey';
+import { IAnalyticsSummary, IOjbectKeySummaryItem, easyAnalyticsSummary, } from './summarizeArrayByKey';
 import { createBarsRow, ezAnalyticsBarHeaders } from './RowBar';
-import { ISourceRowRender } from '../Pages/SourcePages/ISourceRowRender';
+import { makeid } from '../../fpsReferences';
 
 export type ISourceName =  typeof EasyPagesAnalTab ;
 
@@ -227,7 +210,7 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
  */
 
   //https://github.com/mikezimm/Pnpjs-v2-Upgrade-sample/issues/56
-  const classNames: string[] = [ 'source-page' ];
+  const classNames: string[] = [ 'source-page', 'ezAnalyticsSourcePage', 'bannerPillShapeSideMargin' ];
   // const classNames: string[] = [ 'easy-items' ];
   if ( expandedState !== true ) classNames.push ( 'hide-source-page' );
   // if ( props.easyPagesSourceProps.pageLayout === 'SharePointFullPage' || props.easyPagesSourceProps.pageLayout === 'SingleWebPartAppPageLayout' ) classNames.push ( 'easy-items-spa' );
@@ -259,6 +242,7 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
 
 
   const useTopButtons: string[] = tab === 0 ? [ button1, ...TopButtons.filter((str) => str !== button1 ), ...stateSource.meta2.filter((str) => str !== button1 ) ] : [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const useThisState: IStateSourceA = tab === 0 ? stateSource : { ...stateSource, ...{ items: procPerformance[ AnalyticsTabs[ tab ] as 'Sites' ].summaries } , refreshId: makeid( 5 ) } as any;
   const useHeaders: string[] = tab === 0 ? ezAnalyticsItemHeaders : ezAnalyticsBarHeaders;
   const useSgeSlider: boolean = tab === 0 ? true : false;
@@ -297,7 +281,7 @@ const EasyAnalyticsHook: React.FC<IEasyAnalyticsHookProps> = ( props ) => {
   />;
 
 
-  const EasyAnalyticsElement: JSX.Element = <div className = { classNames.join( '' ) } style={ styles }>
+  const EasyAnalyticsElement: JSX.Element = <div className = { classNames.join( ' ' ) } style={ styles }>
     { itemsElement }
     {/* { tab === InfoTab ? createPerformanceTableVisitor( performance, ['fetch1', 'analyze1' ] ) : 
       <div className = { [ 'easy-container', EasyPageNoFetchTabs.indexOf( sourceName ) > -1 ? 'easy-container-2col' : null ].join( ' ' ) } style={ containerStyles }>

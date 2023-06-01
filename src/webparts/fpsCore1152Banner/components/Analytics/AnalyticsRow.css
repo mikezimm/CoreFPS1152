@@ -1,5 +1,13 @@
 @import '~office-ui-fabric-react/dist/css/fabric.min.css';
 
+.ezAnalyticsSourcePage {
+  background: rgb(200, 200, 200);
+}
+
+.ezAnalyticsSourcePage .button:not(.isSelected) {
+  background: rgb(240, 240, 240) !important;
+}
+
 .ezAnalyticsItem {
   padding-top: 15px;
   justify-items: start;
@@ -76,18 +84,18 @@
   padding: 5px;
  }
 
- .ezAnalyticsBarRow td {
-    padding-left: 20px;
- }
- 
- .ezAnalyticsBarRow td:nth-child(1) {
-    width: 300px;
- }
+.ezAnalyticsBarRow td {
+  padding-left: 20px;
+}
 
- .ezAnalyticsBarRow th:nth-child(1) {
-    width: 300px;
- }
+.ezAnalyticsBarRow td:nth-child(1) {
+  width: 300px;
+}
 
- .ezAnalyticsBarCell {
-    padding-left: 0px !important;
- }
+.ezAnalyticsBarRow th:nth-child(1) {
+  width: 300px;
+}
+
+.ezAnalyticsBarCell {
+  padding-left: 0px !important;
+}

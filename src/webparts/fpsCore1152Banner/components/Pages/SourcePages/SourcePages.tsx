@@ -8,7 +8,7 @@ import FPSAgeSliderHook from '@mikezimm/fps-library-v2/lib/components/atoms/FPSA
 
 // import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 
-import { Icon, } from 'office-ui-fabric-react/lib/Icon'; 
+// import { Icon, } from 'office-ui-fabric-react/lib/Icon'; 
 
 // import { check4Gulp } from '@mikezimm/fps-pnp2/lib/services/sp/CheckGulping';
 import { check4This } from "@mikezimm/fps-pnp2/lib/services/sp/CheckSearch";
@@ -21,7 +21,9 @@ import { getFilteredItems } from '@mikezimm/fps-library-v2/lib/components/molecu
 import SourceSearchAgeHook from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/Component/SearchBoxRowAge';
 import { IFPSAgeSliderProps } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeTypes';
 import { FPSAgeSliderOptions7Years } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeSliderOptions7YearPart';
-import { FPSFetchSpinner } from './FPSFetchSpinner';
+import { GetGoToListLink, } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/GoToLinks';
+
+import { FPSFetchStatus } from './FPSFetchStatus';
 
 const AgeSliderOptions = [ { key: -1, maxAge: 0, text: 'all dates', }, ...FPSAgeSliderOptions7Years.map( item => { 
   item.text = `${item.text.replace( 'The past ', 'older than ')} ago`;
@@ -202,7 +204,9 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
 
   public render(): React.ReactElement<ISourcePagesProps> {
 
-    const { primarySource , topButtons, debugMode, showItemType, stateSource } = this.props; // canvasOptions
+    const { primarySource , topButtons, showItemType, stateSource, sourcePageClassName, disableSpinner } = this.props; // canvasOptions
+    const { debugMode, selectedClass, tableHeaderElements, tableHeaderClassName, tableClassName } = this.props; // canvasOptions
+    const { headingElement, footerElement } = this.props; // canvasOptions
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { showThisItem , showItemPanel, searchText } = this.state;
     // const topButtons = this.props.topButtons;
@@ -217,7 +221,7 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
         const classNames = [ 'button' ];
         if ( this.state.topSearch.indexOf( searchObjectFull ) > -1 ) { 
           classNames.push( 'isSelected' ) ;
-          classNames.push( this.props.selectedClass ) ;
+          classNames.push( selectedClass ) ;
         }
         /**
          * This topSearch using arrow function did not work
@@ -232,18 +236,18 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
 
     const topSearchContent = <div className={ 'topSearch' } style={ { background : debugMode === true ? 'pink' : null }} >{ topSearch }</div>;
 
-    const renderAsTable = this.props.tableHeaderElements && this.props.tableHeaderElements.length > 0 ? true : false;
+    const renderAsTable = tableHeaderElements && tableHeaderElements.length > 0 ? true : false;
     let tableElement = undefined;
 
     const filtered: JSX.Element[] = [];
     let tableHeaderRow: JSX.Element = undefined;
     if ( renderAsTable === true ) {
-      tableHeaderRow = <tr className={ this.props.tableHeaderClassName }>{
-        this.props.tableHeaderElements.map( ( item, index ) => { return <th key={ index }>{item}</th>} )
+      tableHeaderRow = <tr className={ tableHeaderClassName }>{
+        tableHeaderElements.map( ( item, index ) => { return <th key={ index }>{item}</th>} )
       }</tr>
     }
 
-    if ( this.props.stateSource.loaded === true ) {
+    if ( stateSource.loaded === true ) {
       this.state.filtered.map( ( item: IAnySourceItem, idx: number ) => {
       if ( idx >= this.state.firstVisible && idx <= this.state.lastVisible ) {
         filtered.push( this.props.renderRow({
@@ -259,10 +263,10 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
       }
     });
     } else { // push spinner element
-      if ( this.props.disableSpinner !== true ) filtered.push( FPSFetchSpinner( stateSource, primarySource ));
+      // if ( this.props.disableSpinner !== true ) filtered.push( FPSFetchSpinner( stateSource, primarySource ));
     }
 
-    if ( !this.props.stateSource || this.props.stateSource.items.length === 0 ) {
+    if ( !stateSource || stateSource.items.length === 0 ) {
       // This is duplicated in SearchPage.tsx and SourcePages.tsx as well
       // const FetchingSpinner = this.props.showSpinner === false ? null : <div style={{display: 'inline'}}><Spinner size={SpinnerSize.large} label={"Fetching more information ..."} style={{ padding: 30 }} /></div>;
       // const spinnerStyles : ISpinnerStyles = { label: {fontSize: '20px', fontWeight: '600',  }};
@@ -272,7 +276,7 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
 
       filtered.push( undefined );
 
-    } else if ( this.props.stateSource.items.length > 0 && filtered.length === 0 ) {
+    } else if ( stateSource.items.length > 0 && filtered.length === 0 ) {
       filtered.push(    <div>
         <h2>Hmmm... I could not find any items with</h2>
         <h3>Search text: </h3>
@@ -293,7 +297,7 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
     }
 
     if ( renderAsTable === true ) {
-      tableElement = <table className={ [ 'sourceTable', this.props.tableClassName ].join( ' ' ) }>
+      tableElement = <table className={ [ 'sourceTable', tableClassName ].join( ' ' ) }>
         { tableHeaderRow }
         { filtered }
       </table>
@@ -311,9 +315,15 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
     const AgeSlider = this.props.ageSlider === false ? undefined : <FPSAgeSliderHook 
       props = { AgeSliderWPProps } />
 
-    const gotoListLink = !primarySource.webRelativeLink ? null : <div className={ [ 'searchSourceStatus', 'fps-gen-goToLink' ].join(' ')} onClick={ () => { window.open( `${primarySource.webUrl}${primarySource.webRelativeLink}`,'_blank' ) ; } }>
-      Go to full list <Icon iconName='OpenInNewTab'/>
-    </div>;
+      // GetGoToListLink, GetGoToItemLink, GetGoToWebLink
+
+    // const gotoListLink = !primarySource.webRelativeLink ? null : 
+    //   <div className={ [ 'fps-gen-inBlockNoWrap ', 'searchSourceStatus', 'fps-gen-goToLink' ].join(' ')} 
+    //     onClick={ () => { window.open( `${primarySource.webUrl}${primarySource.webRelativeLink}`,'_blank' ) ; } }>
+    //     Go to full list <Icon iconName='OpenInNewTab'/>
+    //   </div>;
+
+    const gotoListLink = GetGoToListLink( { primarySource: primarySource, }); // GetGoToListLink, GetGoToItemLink, GetGoToWebLink
 
     const debugContent = debugMode !== true ? null : <div style={{ cursor: 'default', marginLeft: '20px' }}>
       App in debugMode - Change in Web Part Properties - Page Preferences.  <b><em>Currently in {primarySource.listTitle}</em></b>
@@ -331,7 +341,7 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
       itemsPerPage={ this._itemsPerPage }
       itemCount={ this.state.filtered.length }
       _updateFirstLastVisible={ this._updateFirstLastVisible.bind(this) }
-      debugMode={ this.props.debugMode }
+      debugMode={ debugMode }
       resetArrows={ this.state.resetArrows }
       layout={ 'grid' }
       ageElement={ AgeSlider }
@@ -357,31 +367,36 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
     //   } );
 
 
-    const errorMessage = stateSource && stateSource.errorInfo && stateSource.errorInfo.returnMess ? true : false;
-    const theMessage = errorMessage === false ? '' : stateSource.errorInfo.returnMess.split('"value":"');
+    // const errorMessage = stateSource && stateSource.errorInfo && stateSource.errorInfo.returnMess ? true : false;
+    // const theMessage = errorMessage === false ? '' : stateSource.errorInfo.returnMess.split('"value":"');
   
     // const webUrl = itemList[ preLoadIndex ].Subsite;
     // const listTitle = itemList[ preLoadIndex ].NoRecordsDeclared;
-    const webLinkElemennt2 = <div style={{ paddingLeft: '20px' }}className={ [ 'searchSourceStatus', 'fps-gen-goToLink' ].join(' ')} onClick={ () => { window.open( `${primarySource.webUrl}`,'_blank' ) ; } }>
-    Go to web <Icon iconName='OpenInNewTab'/></div>;
+    // const webLinkElemennt2 = <div style={{ paddingLeft: '20px' }}className={ [ 'searchSourceStatus', 'fps-gen-goToLink' ].join(' ')} onClick={ () => { window.open( `${primarySource.webUrl}`,'_blank' ) ; } }>
+    // Go to web <Icon iconName='OpenInNewTab'/></div>;
 
-    const webUrlLink = <span className={ 'errorLink' } onClick={ () => { window.open( primarySource.webUrl, '_blank')}}>{ primarySource.webUrl }</span>;
-    const webUrlLinkDiv = <div style={ { color: 'black', fontSize: 'large', paddingBottom: '10px', fontWeight: 600 }} >Site Url: { webUrlLink }</div>;
+    // const webUrlLink = <span className={ 'errorLink' } onClick={ () => { window.open( primarySource.webUrl, '_blank')}}>{ primarySource.webUrl }</span>;
+    // const webUrlLinkDiv = <div style={ { color: 'black', fontSize: 'large', paddingBottom: '10px', fontWeight: 600 }} >Site Url: { webUrlLink }</div>;
 
-    const errorElement = errorMessage !== true ? undefined : <div style={{ background: 'yellow', color: 'red', height: '200px', paddingTop: '25px', textAlign: 'center' }}>
-      { webUrlLinkDiv }
-      {/* <div style={{ color: 'black', paddingBottom: '5px', fontSize: 'large', fontWeight: 600 }}>Site Url: { webUrlLink }</div>
-      <div style={{ color: 'black', paddingBottom: '15px', fontSize: 'large', fontWeight: 600  }}>Library: { listUrlLink }</div> */}
-      <div style={{ fontSize: 'x-large', paddingBottom: '5px', fontWeight: 700 }}>{ stateSource.errorInfo.friendly }</div>
-      <div style={{ fontSize: 'large', paddingBottom: '15px' }}>{ theMessage[ theMessage.length -1 ].replace('"}}}', '') }</div>
-      { webLinkElemennt2 }
-      { gotoListLink }
-    </div>;
+    // const GoToWebLink1 = GetGoToWebLink( { primarySource: primarySource, altWebText: 'Site Url:', }); // GetGoToListLink, GetGoToItemLink, GetGoToWebLink
+    // const GoToWebLink2 = GetGoToWebLink( { primarySource: primarySource, altWebText: 'Go to site:', showWebIcon: true, webLinkCSS: { color: null, fontSize: null, marginRight: '60px'} }); // GetGoToListLink, GetGoToItemLink, GetGoToWebLink
+
+    // const errorElement = errorMessage !== true ? undefined : <div style={{ background: 'yellow', color: 'red', height: '200px', paddingTop: '25px', textAlign: 'center' }}>
+    //   { GoToWebLink1 }
+    //   {/* <div style={{ color: 'black', paddingBottom: '5px', fontSize: 'large', fontWeight: 600 }}>Site Url: { webUrlLink }</div>
+    //   <div style={{ color: 'black', paddingBottom: '15px', fontSize: 'large', fontWeight: 600  }}>Library: { listUrlLink }</div> */}
+    //   <div style={{ fontSize: 'x-large', paddingBottom: '5px', fontWeight: 700 }}>{ stateSource.errorInfo.friendly }</div>
+    //   <div style={{ fontSize: 'large', paddingBottom: '15px' }}>{ theMessage[ theMessage.length -1 ].replace('"}}}', '') }</div>
+    //   { GoToWebLink2 }
+    //   { gotoListLink }
+    // </div>;
   
+    const StatusElement : JSX.Element = FPSFetchStatus( primarySource, stateSource, disableSpinner );
+
     return (
-          <div className={ 'sourcePage' }>
+          <div className={ [ 'sourcePage', sourcePageClassName ].join( ' ' ) }>
               { debugContent }
-              { this.props.headingElement }
+              { headingElement }
               { searchSourceDesc }
               {/* <div> */}
               { searchBox }
@@ -391,8 +406,8 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
               { topSearchContent }
               { renderAsTable === true ? tableElement : undefined }
               { renderAsTable === false ? filtered : undefined }
-              { errorElement }
-              { this.props.footerElement }
+              { StatusElement }
+              { footerElement }
               {/* { FetchingSpinner } */}
               {/* { deepHistory }
               { thePanel } */}
