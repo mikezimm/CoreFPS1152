@@ -1,12 +1,11 @@
-// import { IAnySourceItem } from "../../../../components/molecules/SourceList/IAnyContent";
 
 import { IAnySourceItem } from "@mikezimm/fps-library-v2/lib/components/molecules/SourceList/IAnyContent";
 import { IPerformanceOp, makeid, sortObjectArrayByNumberKey } from "../../fpsReferences";
 import { IPerformanceSettings } from "@mikezimm/fps-library-v2/lib/components/molecules/Performance/IPerformanceSettings";
 import { startPerformOpV2, updatePerformanceEndV2 } from "@mikezimm/fps-library-v2/lib/components/molecules/Performance/functions";
 import { getBestAnalyticsLinkAndIcon } from "./getBestAnalyticsLinkAndIcon";
-import { IZFetchedAnalytics } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA";
-
+import { IZFetchedAnalytics } from "@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/interfaces/IStateSourceA";
+import { check4This } from "@mikezimm/fps-pnp2/lib/services/sp/CheckSearch";
 
 export interface IOjbectKeySummaryItem {
   primaryKey: string;
@@ -120,6 +119,8 @@ export function easyAnalyticsSummary( items: IAnySourceItem[] ) : IAnalyticsSumm
       CodeVersion: CodeVersion.keys.length,
     }
   }
+
+  if ( check4This( 'sourceResults=true' ) === true )  console.log( 'sourceResults easyAnalyticsSummary', result, );
 
   return result;
 }

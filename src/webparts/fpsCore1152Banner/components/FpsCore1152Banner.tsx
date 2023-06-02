@@ -13,7 +13,7 @@ import FetchBannerX from '@mikezimm/fps-library-v2/lib/banner/bannerX/FetchBanne
 
 import { getWebPartHelpElementBoxTiles } from '../PropPaneHelp/PropPaneHelp';
 import { getBannerPages, } from './HelpPanel/AllContent';
-import { check4Gulp, IBannerPages, IPinMeState, makeid } from "../fpsReferences";
+import { check4Gulp, IBannerPages, makeid } from "../fpsReferences";
 
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsReferences";
 
@@ -253,13 +253,8 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
     />;
 
     const TestElement: JSX.Element = <EasyAnalyticsHook 
-    easyAnalyticsProps = {{
-      analyticsListX: this.props.bannerProps.analyticsListX,
-      expandedState: true,
-      class1: styles.fpsSiteThemePrimary,
-      class2: styles.fpsSiteThemeDark,
-    }}
-    easyPagesSourceProps={ this.props.bannerProps.easyPagesSourceProps }
+      easyAnalyticsProps = { this.props.bannerProps.easyAnalyticsProps }
+      easyPagesSourceProps={ this.props.bannerProps.easyPagesSourceProps }
 
     />
 

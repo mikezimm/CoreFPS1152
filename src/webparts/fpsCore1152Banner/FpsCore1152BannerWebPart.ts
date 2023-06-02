@@ -55,7 +55,7 @@ import * as strings from 'FpsCore1152BannerWebPartStrings';
 import FpsCore1152Banner from './components/FpsCore1152Banner';
 import { IFpsCore1152BannerWebPartProps,  } from './IFpsCore1152BannerWebPartProps';
 import { IFpsCore1152BannerProps } from './components/IFpsCore1152BannerProps';
-
+import styles from './components/FpsCore1152Banner.module.scss';
 
  /***
   *     .o88b. .d8888. .d8888.      d8888b. d88888b  .d88b.  db    db d888888b d8888b. d88888b .d8888. 
@@ -116,6 +116,9 @@ export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152B
 
     this._repoLink = gitRepoDrillDown; //Set as any but will get created in FPSSuperOnOnit
     this._analyticsListX = 'TilesCycleTesting';
+    this._fpsSiteThemeDark = styles.fpsSiteThemeDark;
+    this._fpsSiteThemeLight = styles.fpsSiteThemeLight;
+    this._fpsSiteThemePrimary = styles.fpsSiteThemePrimary;
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
     this._trickyApp = 'FPS UPDATE FPSBaseClass';

@@ -4,13 +4,12 @@ import * as React from 'react';
 
 import { getHighlightedText } from '@mikezimm/fps-library-v2/lib/components/atoms/Elements/HighlightedText';
 
-// import { ISourceRowRender } from '../SourcePages/ISourceRowRender';
 import { buildClickableIcon } from '@mikezimm/fps-library-v2/lib/components/atoms/Icons/stdIconsBuildersV02';
-import { IZFetchedAnalytics } from '@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/IStateSourceA';
+import { IZFetchedAnalytics } from '@mikezimm/fps-library-v2/lib/banner/components/EasyPages/Analytics/interfaces/IStateSourceA';
 import { ISourceRowRender } from '../Pages/SourcePages/ISourceRowRender';
 import { IAnalyticsLinkIcon, getBestAnalyticsLinkAndIcon } from './getBestAnalyticsLinkAndIcon';
 
-require ('./AnalyticsRow.css');
+require ('@mikezimm/fps-styles/dist/easyAnalytics.css');
 require ('@mikezimm/fps-styles/dist/fpsGeneralCSS.css');
 
 export const ezAnalyticsItemHeaders: string[] = [ 'Id', 'Link', 'Gulp', 'Age', 'Who', 'lang', 'Loc', 'Web','Title', 'perf', 'CodeVersion' ];
@@ -44,10 +43,6 @@ export function createItemsRow( props: ISourceRowRender ): JSX.Element { // esli
 
 }
 
-// export const BulletedList : string = 'BulletedList';
-// export const OrgIcon : string = 'Org';
-// export const FolderIcon : string = 'Folder';
-// export const TagIcon : string = 'Tag';
 export const ProcessingRunIcon : string = 'ProcessingRun';
 export const SharepointLogo : string = 'SharepointLogo';
 

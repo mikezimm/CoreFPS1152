@@ -70,7 +70,6 @@ export interface ISourcePagesProps extends IPageArrowsParentProps {
 export type ISort = 'asc' | 'dec' | '-';
 
 export interface ISourcePagesState extends IMinPageArrowsState {
-  // description: string;
 
   resetArrows?: string; //unique Id used to reset arrows to starting position
 
@@ -96,8 +95,5 @@ export interface ISourcePagesState extends IMinPageArrowsState {
   detailToggle: boolean;
 
   enableAge: boolean;
-
-  // firstVisible: number; //Index of item to start showing ( for paging )
-  // lastVisible: number; //Index of item to start showing ( for paging )
 
 }

@@ -1,23 +1,15 @@
 import * as React from 'react';
-// import stylesS from './Search/SourceSearch.module.scss';
-// import styles from './SourcePages.module.scss';
 
 import { ISourcePagesProps, ISourcePagesState, } from './ISourcePagesProps';
 
 import FPSAgeSliderHook from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeHook';
 
-// import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
-
-// import { Icon, } from 'office-ui-fabric-react/lib/Icon'; 
-
-// import { check4Gulp } from '@mikezimm/fps-pnp2/lib/services/sp/CheckGulping';
 import { check4This } from "@mikezimm/fps-pnp2/lib/services/sp/CheckSearch";
 
 import { IAnySourceItem } from '@mikezimm/fps-library-v2/lib/components/molecules/SourceList/IAnyContent';
 import { makeid } from '@mikezimm/fps-library-v2/lib/logic/Strings/guids';
 
 import { getFilteredItems } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/getFilteredV1';
-// import { ContentPanel, } from './SourcePanelContent';
 import SourceSearchAgeHook from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/Component/SearchBoxRowAge';
 import { IFPSAgeSliderProps } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeTypes';
 import { FPSAgeSliderOptions7Years } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeSliderOptions7YearPart';
@@ -113,7 +105,6 @@ public componentDidUpdate(prevProps: ISourcePagesProps): void {
     let resetArrows = false;
     if ( prevProps.resetArrows !== this.props.resetArrows ||  prevProps.ageSlider !== this.props.ageSlider  
       ||  prevProps.searchAgeProp !== this.props.searchAgeProp   ||  prevProps.searchAgeOp !== this.props.searchAgeOp  ) {
-      // updateViewFields = true;
       resetArrows = true;
 
     }
@@ -126,7 +117,6 @@ public componentDidUpdate(prevProps: ISourcePagesProps): void {
 
     if ( !stateSource || topButtons.join('-') !== prevProps.topButtons.join('-')) {
       this.setState({ 
-        // refreshId: this.props.stateSource.refreshId, 
         filtered: stateSource ? stateSource.items : [],
         topSearch: [],
         searchText: '',
@@ -139,7 +129,6 @@ public componentDidUpdate(prevProps: ISourcePagesProps): void {
 
     } else if ( this.props.primarySource !== prevProps.primarySource ) {
       this.setState({ 
-        // refreshId: this.props.stateSource.refreshId, 
         filtered: stateSource ? stateSource.items : [],
         topSearch: [],
         searchText: '',
@@ -152,7 +141,6 @@ public componentDidUpdate(prevProps: ISourcePagesProps): void {
 
     } else if ( this.props.stateSource.items.length !== prevProps.stateSource.items.length ) {
       this.setState({ 
-        // refreshId: this.props.stateSource.refreshId, 
         filtered: stateSource.items,
         // added searchText reset for https://github.com/mikezimm/Compliance/issues/126
         searchText: '',  
@@ -209,7 +197,6 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
     const { headingElement, footerElement } = this.props; // canvasOptions
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { showThisItem , showItemPanel, searchText } = this.state;
-    // const topButtons = this.props.topButtons;
 
     const topSearch: JSX.Element[] = [];  //All major future to be grid components
 
@@ -226,7 +213,6 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
         /**
          * This topSearch using arrow function did not work
          */
-        // topSearch.push( <div className={ classNames.join(' ') } style={ null }  onClick={ () =>this._clickTop.bind( searchObject )}>{ searchObject }</div> );
         topSearch.push( <div className={ classNames.join(' ') } style={ null }  
           onClick={ this._clickTop.bind( this, searchObjectFull )} 
           title={ searchObjectArray.length > 0 ? searchObjectFull : '' }>{ searchObject }</div> ); //Only show Title prop if the button has special search 
@@ -249,19 +235,19 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
 
     if ( stateSource.loaded === true ) {
       this.state.filtered.map( ( item: IAnySourceItem, idx: number ) => {
-      if ( idx >= this.state.firstVisible && idx <= this.state.lastVisible ) {
-        filtered.push( this.props.renderRow({
-          item : item,
-          searchText: searchText,
-          onClick:  this.clickListItem.bind( this ),
-          onTextFilter:  this.clickTextFilter.bind( this ),
-          onPropFilter:  this.clickPropFilter.bind( this ),
-          details: this.state.detailToggle,
-          showItemType: showItemType,
-          onParentCall: this.props.onParentCall,
-        }));
-      }
-    });
+        if ( idx >= this.state.firstVisible && idx <= this.state.lastVisible ) {
+          filtered.push( this.props.renderRow({
+            item : item,
+            searchText: searchText,
+            onClick:  this.clickListItem.bind( this ),
+            onTextFilter:  this.clickTextFilter.bind( this ),
+            onPropFilter:  this.clickPropFilter.bind( this ),
+            details: this.state.detailToggle,
+            showItemType: showItemType,
+            onParentCall: this.props.onParentCall,
+          }));
+        }
+      });
     } else { // push spinner element
       // if ( this.props.disableSpinner !== true ) filtered.push( FPSFetchSpinner( stateSource, primarySource ));
     }
@@ -445,9 +431,6 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
       resetArrows: makeid(4),
      });
 
-    //https://stackoverflow.com/a/40493291
-    // this.updateParentDeeplinks( this.state.searchText, selected, filtered.length );
-
   }
 
   
@@ -473,69 +456,6 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
     return selected;
 
   }
-
-
-  private getFilteredItems( startingItems: IAnySourceItem[], text: string, top: string[]  ): IAnySourceItem[] {
-
-    const filteredItems : IAnySourceItem[] = [];
-
-    startingItems.map( item => {
-
-      let passMe = true;
-
-      //Hiding this if I only go with simple text search
-      // if ( top.length > 0 && passMe === true ) { 
-      //   let passThis: boolean = false;
-      //   item.topSearch.map( test => {
-      //     if ( top.indexOf( test ) > -1 ) { passThis = true ; }
-      //   });
-      //   if ( passThis === false ) { passMe = false; }
-      // }
-
-      //Separate logic from SearchPage.tsx search... this looks at the searchTextLC for simpler execution
-      if ( top.length > 0 && passMe === true ) { 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        let passThis: any = false;
-        top.map( topTest => {
-          if ( item.searchTextLC.indexOf( topTest.toLowerCase() ) > -1 ) { passThis = true ; }
-        });
-        if ( passThis === false ) { passMe = false; }
-      }
-
-      if ( passMe === true && text && text.length > 0 ) { 
-        if ( item.searchTextLC.indexOf( text.toLowerCase() ) < 0 ) { passMe = false; }
-
-      }
-
-      if ( passMe === true ) { filteredItems.push ( item ) ; }
-    });
-
-    console.log(' filteredItems: ', filteredItems );
-    return filteredItems;
-  }
-
-  /**
-   * Source:  https://github.com/pnp/sp-dev-fx-webparts/issues/1944
-   * 
-   * @param NewValue 
-   *   
-  private sentWebUrl: string = '';
-  private lastWebUrl : string = '';
-  private typeGetTime: number[] = [];
-  private typeDelay: number[] = [];
-   */
-  // private delayOnSearch(NewSearch: string): void {
-  //   //Track the url change and also record timings for testing.
-  //   this._lastSearch = NewSearch;
-
-  //   setTimeout(() => {
-  //     if (this._lastSearch === NewSearch ) {
-  //       this._onSearchChange( NewSearch );
-  //     } else {
-
-  //     }
-  //   }, 1000);
-  // }
 
   /**
    * https://www.kindacode.com/article/react-typescript-handling-onclick-event/
@@ -603,11 +523,6 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
 
     const filtered: IAnySourceItem[] = getFilteredItems( ageFilteredItems, NewSearch, [], [], [], this.state.topSearch );
 
-    // setTimeout(() => {
-      // this.updateParentDeeplinks( SearchValue, this.state.topSearch, filtered.length );
-    // }, 1000);
-
-
     const endTime = new Date();
     const totalTime = endTime.getTime() - startTime.getTime();
 
@@ -624,79 +539,26 @@ public async updateWebInfo (   ): Promise<void> {  // eslint-disable-line  @type
     });
   }
 
-  // private updateParentDeeplinks( searchText: string, topLinks: string[], count: number ): void {
-  //   if ( count > 0 ) {
-  //     if ( this.props.bumpDeepLinks ) {
-  //       const deepLink2 = encodeURIComponent(JSON.stringify( topLinks ));
-  //       this.props.bumpDeepLinks( 'Sources', this.props.primarySource.searchSource, [searchText, deepLink2 ], count );
-  //     }
-  //   }
-
-  // }
-
-  // private jumpToDeepLink( item: IDeepLink ): void {
-  //   if ( this.props.jumpToDeepLink ) {
-
-  //     //jumpToDeepLink( mainPivotKey: IMainPage, sourcePivotKey: ISourcePage, categorizedPivotKey: ICategoryPage, deepProps: string[] = [] )
-  //     this.props.jumpToDeepLink( item.main, item.second, '', [item.deep1, item.deep2 ] );
-  //   }
-  // }
-
-  // private _onClosePanel( ): void {
-  //   this.setState({ showItemPanel: false });
-  // }
-
-  // private async clickModernItem( ID: number, category: string, item: IPagesContent, e: any ): Promise<void> {  //this, item.ID, 'pages', item
-  //   console.log('clickNewsItem:', ID, item );
-  //   // debugger;
-
-  //   await getDocWiki( item , this.props.primarySource, this.props.canvasOptions, true, this.updateModernState.bind( this ) );
-
-  // }
-
-  // private async clickFileItem( ID: number, category: string, item: IPagesContent, e: any ):  Promise<void> {  //this, item.ID, 'files', item
-  //   console.log('clickNewsItem:', ID, item );
-  //   // debugger;
-
-  //   await getDocWiki( item , this.props.primarySource, this.props.canvasOptions, true, this.updateModernState.bind( this ) );
-
-  // }
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private clickListItem( ID: number, category: string, item: IAnySourceItem, e: any ): void {  //this, item.ID, 'files', item
-    console.log('clickNewsItem:', ID, item );
-    // debugger;
-
+  private clickListItem( ID: number, category: string, item: IAnySourceItem, e: any ): void {  
+    if ( check4This(`onClicks=true`) === true ) console.log('onClicks clickNewsItem:', ID, item );
     this.setState({ showItemPanel : true , showThisItem: item }) ;
 
   }
 
-  private clickTextFilter( value: string ): void {  //this, item.ID, 'files', item
-    console.log('clickTextFilter:', value );
-    // debugger;
-
+  private clickTextFilter( value: string ): void {  
+    if ( check4This(`onClicks=true`) === true ) console.log('onClicks clickTextFilter:', value );
     this._onSearchChange( null, value ) ;
 
   }
 
-  private clickPropFilter( prop: string, value: string ): void {  //this, item.ID, 'files', item
-    console.log('clickPropFilter:', prop, value );
-    // debugger;
+  private clickPropFilter( prop: string, value: string ): void {  
+    if ( check4This(`onClicks=true`) === true ) console.log('onClicks clickPropFilter:', prop, value );
     //Clear filter if it was already set to this value
     if ( value === this.state.searchText ) value = '';
     this._onSearchChange( null, value ) ;
 
   }
-
-  //getDocWiki( item: IPagesContent, source: ISourcePropsFM,  canvasOptions: ICanvasContentOptions, callBack: any )
-  // private updateModernState( item: IPagesContent, showCanvasContent1: boolean ): void {
-
-  //   this.setState({ 
-  //     showItemPanel: true, 
-  //     showCanvasContent1: showCanvasContent1, 
-  //     showThisItem: item as IAnySourceItem });
-
-  // }
 
   private _updateFirstLastVisible( firstVisible: number, lastVisible: number ) : void{
     this.setState({

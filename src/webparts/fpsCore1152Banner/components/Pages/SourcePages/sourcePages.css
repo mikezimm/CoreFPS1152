@@ -28,6 +28,7 @@
 .sourceDesc {
   font-size: larger;
   font-weight: 600;
+  margin-right: 30px;
 }
 
 .errorLink {
