@@ -253,7 +253,7 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
     />;
 
     const TestElement: JSX.Element = <EasyAnalyticsHook 
-      easyAnalyticsProps = { this.props.bannerProps.easyAnalyticsProps }
+      easyAnalyticsProps = {{ ...this.props.bannerProps.easyAnalyticsProps, ...{ expandedState: true }  } }
       easyPagesSourceProps={ this.props.bannerProps.easyPagesSourceProps }
 
     />
@@ -262,7 +262,7 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
       <section className={`${styles.fpsCore1152Banner} ${hasTeamsContext ? styles.teams : ''}`}>
         { devHeader }
         { Banner }
-        { TestElement }
+        {/* { TestElement } */}
 
         <div className={styles.welcome}>
           <img  onClick={ this._doSomething.bind(this)} alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />

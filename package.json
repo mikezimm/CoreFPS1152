@@ -14,7 +14,7 @@
     "@microsoft/sp-office-ui-fabric-core": "1.15.2",
     "@microsoft/sp-property-pane": "1.15.2",
     "@microsoft/sp-webpart-base": "1.15.2",
-    "@mikezimm/fps-library-v2": "^1.0.220",
+    "@mikezimm/fps-library-v2": "^1.0.221",
     "@pnp/spfx-property-controls": "3.8.0",
     "office-ui-fabric-react": "7.185.7",
     "react": "16.13.1",

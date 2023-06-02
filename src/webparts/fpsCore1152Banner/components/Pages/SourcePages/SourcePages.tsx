@@ -10,7 +10,7 @@ import { IAnySourceItem } from '@mikezimm/fps-library-v2/lib/components/molecule
 import { makeid } from '@mikezimm/fps-library-v2/lib/logic/Strings/guids';
 
 import { getFilteredItems } from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/functions/getFilteredV1';
-import SourceSearchAgeHook from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/Component/SearchBoxRowAge';
+import SourceSearchAgeHook from '@mikezimm/fps-library-v2/lib/components/molecules/SearchPage/component/SearchBoxRowAge';
 import { IFPSAgeSliderProps } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeTypes';
 import { FPSAgeSliderOptions7Years } from '@mikezimm/fps-library-v2/lib/components/atoms/FPSAgeSlider/FPSAgeSliderOptions7YearPart';
 import { GetGoToListLink, } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/GoToLinks';
