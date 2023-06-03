@@ -55,7 +55,7 @@ import * as strings from 'FpsCore1152BannerWebPartStrings';
 import FpsCore1152Banner from './components/FpsCore1152Banner';
 import { IFpsCore1152BannerWebPartProps,  } from './IFpsCore1152BannerWebPartProps';
 import { IFpsCore1152BannerProps } from './components/IFpsCore1152BannerProps';
-import styles from './components/FpsCore1152Banner.module.scss';
+import stylesFPS from './CoreFPS/fpsTheme.module.scss';
 
  /***
   *     .o88b. .d8888. .d8888.      d8888b. d88888b  .d88b.  db    db d888888b d8888b. d88888b .d8888. 
@@ -116,15 +116,17 @@ export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152B
 
     this._repoLink = gitRepoDrillDown; //Set as any but will get created in FPSSuperOnOnit
     this._analyticsListX = 'TilesCycleTesting';
-    this._fpsSiteThemeDark = styles.fpsSiteThemeDark;
-    this._fpsSiteThemeLight = styles.fpsSiteThemeLight;
-    this._fpsSiteThemePrimary = styles.fpsSiteThemePrimary;
+    this._fpsSiteThemes = stylesFPS;
+    // this._fpsSiteThemeDark = styles.fpsSiteThemeDark;
+    // this._fpsSiteThemeLight = styles.fpsSiteThemeLight;
+    // this._fpsSiteThemePrimary = styles.fpsSiteThemePrimary;
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
     this._trickyApp = 'FPS UPDATE FPSBaseClass';
     this._trickyEmailsWP = []; // These are emails that get tricky functionality for this specific web part
     this._allowShowSearch = false;  //Set to true if you want 'Toggle Search option' in property pane
     this._allowSiteThemeChoice = true;  // Should be set true by default in fps-library-v2 1.0.78
+    this._allowPinMe = true;
 
     return super.onInit().then(async _ => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

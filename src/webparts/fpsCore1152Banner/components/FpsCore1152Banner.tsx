@@ -1,12 +1,12 @@
 import * as React from 'react';
 import styles from './FpsCore1152Banner.module.scss';
+
 import { IFpsCore1152BannerProps, IFpsCore1152BannerState } from './IFpsCore1152BannerProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 
 
 import { saveViewAnalytics } from '../CoreFPS/Analytics';
 
-// import FetchBanner from '../CoreFPS/FetchBannerElement';
 import FetchBannerX from '@mikezimm/fps-library-v2/lib/banner/bannerX/FetchBannerX';
 // import { createSpecialElement } from '@mikezimm/fps-library-v2/lib/banner/components/SpecialBanner/component';
 // import { ISpecialMessage, } from '@mikezimm/fps-library-v2/lib/banner/components/SpecialBanner/interface';
@@ -16,10 +16,6 @@ import { getBannerPages, } from './HelpPanel/AllContent';
 import { check4Gulp, IBannerPages, makeid } from "../fpsReferences";
 
 import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsReferences";
-
-import { ISiteThemes } from "@mikezimm/fps-library-v2/lib/common/commandStyles/ISiteThemeChoices";
-import EasyAnalyticsHook from './Analytics/analyticsPage';
-const SiteThemes: ISiteThemes = { dark: styles.fpsSiteThemeDark, light: styles.fpsSiteThemeLight, primary: styles.fpsSiteThemePrimary };
 
 //Use this to add more console.logs for this component
 const consolePrefix: string = 'fpsconsole: FpsCore115Banner';
@@ -234,7 +230,7 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
       // bonusHTML1={ 'BonusHTML1 Text' }
       panelPerformance={ this._performance }
       // bonusHTML2={ <div>BonusHTML2 Div</div> }
-      siteThemes = { SiteThemes }
+      // siteThemes = { SiteThemes }
 
       bannerProps={ this.props.bannerProps }
       parentState={ this.state }
@@ -252,11 +248,11 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
 
     />;
 
-    const TestElement: JSX.Element = <EasyAnalyticsHook 
-      easyAnalyticsProps = {{ ...this.props.bannerProps.easyAnalyticsProps, ...{ expandedState: true }  } }
-      easyPagesSourceProps={ this.props.bannerProps.easyPagesSourceProps }
+    // const TestElement: JSX.Element = <EasyAnalyticsHook 
+    //   easyAnalyticsProps = {{ ...this.props.bannerProps.easyAnalyticsProps, ...{ expandedState: true }  } }
+    //   easyPagesSourceProps={ this.props.bannerProps.easyPagesSourceProps }
 
-    />
+    // />
 
     return (
       <section className={`${styles.fpsCore1152Banner} ${hasTeamsContext ? styles.teams : ''}`}>

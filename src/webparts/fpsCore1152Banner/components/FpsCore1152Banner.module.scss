@@ -2,54 +2,50 @@
 
 
 
-// Copy this to every web part for standard theme support
-// VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+// // Copy this to every web part for standard theme support
+// // VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 
 
 
-// define variables first
-//https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-theme-colors-in-your-customizations#available-theme-tokens-and-their-occurances
-$themePrimary: '[theme:themePrimary, default:#0078d7]';
-$themeWhite: '[theme:white, default:white]';
-
-.fpsMainErrBlock {
-  display: grid;
-  justify-items: center;
-  background: yellow;
-  padding: 20px 20px 50px 20px;
-
-  h2 {
-    font-size: xx-large;
-  }
-
-  li {
-    color: red;
-    font-size: 20px;
-    font-weight: 600;
-  }
-}
-
-//https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-theme-colors-in-your-customizations#available-theme-tokens-and-their-occurances
-$themePrimary: '[theme:themePrimary, default:#0078d7]';
+// // define variables first
+// //https://docs.microsoft.com/en-us/sharepoint/dev/spfx/use-theme-colors-in-your-customizations#available-theme-tokens-and-their-occurances
+// $themePrimary: '[theme:themePrimary, default:#0078d7]';
 // $themeWhite: '[theme:white, default:white]';
 
-.fpsSiteThemeDark {
-  background-color: $ms-color-themeDark !important;
-  color: $ms-color-white !important;
-}
+// .fpsMainErrBlock {
+//   display: grid;
+//   justify-items: center;
+//   background: yellow;
+//   padding: 20px 20px 50px 20px;
 
-.fpsSiteThemeLight {
-  background-color: $ms-color-themeLight !important;
-  color: $ms-color-themeDark !important;
-}
+//   h2 {
+//     font-size: xx-large;
+//   }
 
-.fpsSiteThemePrimary {
-  background-color: $ms-color-themePrimary !important;
-  color: $ms-color-white !important ;
-}
+//   li {
+//     color: red;
+//     font-size: 20px;
+//     font-weight: 600;
+//   }
+// }
 
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-// Copy this to every web part for standard theme support
+// .fpsSiteThemeDark {
+//   background-color: $ms-color-themeDark !important;
+//   color: $ms-color-white !important;
+// }
+
+// .fpsSiteThemeLight {
+//   background-color: $ms-color-themeLight !important;
+//   color: $ms-color-themeDark !important;
+// }
+
+// .fpsSiteThemePrimary {
+//   background-color: $ms-color-themePrimary !important;
+//   color: $ms-color-white !important ;
+// }
+
+// // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// // Copy this to every web part for standard theme support
 
 
 
@@ -57,7 +53,7 @@ $themePrimary: '[theme:themePrimary, default:#0078d7]';
 
 .fpsCore1152Banner {
   overflow: hidden;
-  padding: 1em;
+  // padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
   &.teams {
