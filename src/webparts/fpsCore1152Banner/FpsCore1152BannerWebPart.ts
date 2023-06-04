@@ -55,7 +55,7 @@ import * as strings from 'FpsCore1152BannerWebPartStrings';
 import FpsCore1152Banner from './components/FpsCore1152Banner';
 import { IFpsCore1152BannerWebPartProps,  } from './IFpsCore1152BannerWebPartProps';
 import { IFpsCore1152BannerProps } from './components/IFpsCore1152BannerProps';
-import stylesFPS from './CoreFPS/fpsTheme.module.scss';
+
 
  /***
   *     .o88b. .d8888. .d8888.      d8888b. d88888b  .d88b.  db    db d888888b d8888b. d88888b .d8888. 
@@ -67,6 +67,8 @@ import stylesFPS from './CoreFPS/fpsTheme.module.scss';
   *
   *     USED BY BANNER COMPONENTS
   */
+
+import stylesFPS from './CoreFPS/fpsTheme.module.scss';
 
 import { initializeIcons } from '@uifabric/icons';
 initializeIcons();
@@ -96,8 +98,7 @@ import { getAllDefaultFPSFeatureGroups } from '@mikezimm/fps-library-v2/lib/bann
 
 import { WebPartInfoGroup, } from '@mikezimm/fps-library-v2/lib/banner/propPane/WebPartInfoGroup';
 import { exportIgnorePropsWP, importBlockPropsWP, WebPartAnalyticsChanges, WebPartPanelChanges,  } from './IFpsCore1152BannerWebPartProps';
-import { gitRepoDrillDown } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/LinksRepos';
-//  import { IFpsOldVsNewWebPartProps } from './IFpsOldVsNewWebPartProps';
+import { gitRepoCoreFPS1152Small } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/LinksRepos';
 import { runFPSSuperOnInit } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runSuperOnInit';
 import { runFPSWebPartRender } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runWebPartRender';
 import { onFPSPropPaneCHanged } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runOnPropChange';
@@ -114,12 +115,9 @@ export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152B
   protected async onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
 
-    this._repoLink = gitRepoDrillDown; //Set as any but will get created in FPSSuperOnOnit
+    this._repoLink = gitRepoCoreFPS1152Small; //Set as any but will get created in FPSSuperOnOnit
     this._analyticsListX = 'TilesCycleTesting';
     this._fpsSiteThemes = stylesFPS;
-    // this._fpsSiteThemeDark = styles.fpsSiteThemeDark;
-    // this._fpsSiteThemeLight = styles.fpsSiteThemeLight;
-    // this._fpsSiteThemePrimary = styles.fpsSiteThemePrimary;
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
     this._trickyApp = 'FPS UPDATE FPSBaseClass';

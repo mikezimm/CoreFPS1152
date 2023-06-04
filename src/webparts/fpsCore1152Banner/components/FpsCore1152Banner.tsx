@@ -261,7 +261,10 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
         {/* { TestElement } */}
 
         <div className={styles.welcome}>
-          <img  onClick={ this._doSomething.bind(this)} alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
+          <img  onClick={ this._doSomething.bind(this)} alt="" 
+
+            src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
+
           <h2>Well done, {escape(userDisplayName)}!</h2>
           <div>{environmentMessage}</div>
           <div>Web part property value: <strong>{escape(description)}</strong></div>
