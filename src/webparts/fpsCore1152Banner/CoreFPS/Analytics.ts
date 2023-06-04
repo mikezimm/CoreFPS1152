@@ -14,9 +14,10 @@ import { DisplayMode, } from '@microsoft/sp-core-library';
  */
 
  import { IFpsCore1152BannerProps } from '../components/IFpsCore1152BannerProps';
- import { check4Gulp, ILoadPerformance, } from '../fpsMinIndex';
+ import { check4Gulp, ILoadPerformance, } from '../fpsReferences';
  import { saveAnalytics3, getMinPerformanceString } from '@mikezimm/fps-library-v2/lib/pnpjs/Logging/saveAnalytics';
  import { IZLoadAnalytics, IZSentAnalytics, } from '@mikezimm/fps-library-v2/lib/pnpjs/Logging/interfaces';
+import { panelVersionNumber } from '../components/HelpPanel/About';
 
  /***
   *    db       .d88b.   .o88b.  .d8b.  db      
@@ -69,9 +70,9 @@ export function saveViewAnalytics( Title: string, Result: string, parentProps: I
 
       };
 
-      const zzzRichText1Obj: any = null;
-      const zzzRichText2Obj: any = null;
-      const zzzRichText3Obj: any = null;
+      // const zzzRichText1Obj: any = null;
+      // const zzzRichText2Obj: any = null;
+      // const zzzRichText3Obj: any = null;
 
       // console.log( 'zzzRichText1Obj:', zzzRichText1Obj);
       // console.log( 'zzzRichText2Obj:', zzzRichText2Obj);
@@ -90,18 +91,18 @@ export function saveViewAnalytics( Title: string, Result: string, parentProps: I
         }
       }
 
-      let zzzRichText1: string = null;
-      let zzzRichText2: string = null;
-      let zzzRichText3: string = null;
+      // let zzzRichText1: string = null;
+      // let zzzRichText2: string = null;
+      // let zzzRichText3: string = null;
 
       //This will get rid of all the escaped characters in the summary (since it's all numbers)
       // let zzzRichText3 = ''; //JSON.stringify( fetchInfo.summary ).replace('\\','');
       //This will get rid of the leading and trailing quotes which have to be removed to make it real json object
       // zzzRichText3 = zzzRichText3.slice(1, zzzRichText3.length - 1);
 
-      if ( zzzRichText1Obj ) { zzzRichText1 = JSON.stringify( zzzRichText1Obj ); }
-      if ( zzzRichText2Obj ) { zzzRichText2 = JSON.stringify( zzzRichText2Obj ); }
-      if ( zzzRichText3Obj ) { zzzRichText3 = JSON.stringify( zzzRichText3Obj ); }
+      // if ( zzzRichText1Obj ) { zzzRichText1 = JSON.stringify( zzzRichText1Obj ); }
+      // if ( zzzRichText2Obj ) { zzzRichText2 = JSON.stringify( zzzRichText2Obj ); }
+      // if ( zzzRichText3Obj ) { zzzRichText3 = JSON.stringify( zzzRichText3Obj ); }
 
       // console.log('zzzRichText1 length:', zzzRichText1 ? zzzRichText1.length : 0 );
       // console.log('zzzRichText2 length:', zzzRichText2 ? zzzRichText2.length : 0 );
@@ -133,11 +134,12 @@ export function saveViewAnalytics( Title: string, Result: string, parentProps: I
         // zzzNumber6: fetchInfo.Secure.length,
         // zzzNumber7: fetchInfo.js.length,
 
-        zzzRichText1: zzzRichText1,  //Used to store JSON objects for later use, will be stringified
-        zzzRichText2: zzzRichText2,
-        zzzRichText3: zzzRichText3,
+        // zzzRichText1: zzzRichText1,  //Used to store JSON objects for later use, will be stringified
+        // zzzRichText2: zzzRichText2,
+        // zzzRichText3: zzzRichText3,
 
         performance: performance,
+        CodeVersion: panelVersionNumber,
 
         FPSProps: FPSProps,
 

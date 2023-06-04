@@ -68,6 +68,8 @@ import { IFpsCore1152BannerProps } from './components/IFpsCore1152BannerProps';
   *     USED BY BANNER COMPONENTS
   */
 
+import stylesFPS from './CoreFPS/fpsTheme.module.scss';
+
 import { initializeIcons } from '@uifabric/icons';
 initializeIcons();
 
@@ -96,8 +98,7 @@ import { getAllDefaultFPSFeatureGroups } from '@mikezimm/fps-library-v2/lib/bann
 
 import { WebPartInfoGroup, } from '@mikezimm/fps-library-v2/lib/banner/propPane/WebPartInfoGroup';
 import { exportIgnorePropsWP, importBlockPropsWP, WebPartAnalyticsChanges, WebPartPanelChanges,  } from './IFpsCore1152BannerWebPartProps';
-import { gitRepoDrillDown } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/LinksRepos';
-//  import { IFpsOldVsNewWebPartProps } from './IFpsOldVsNewWebPartProps';
+import { gitRepoCoreFPS1152Small } from '@mikezimm/fps-library-v2/lib/components/atoms/Links/LinksRepos';
 import { runFPSSuperOnInit } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runSuperOnInit';
 import { runFPSWebPartRender } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runWebPartRender';
 import { onFPSPropPaneCHanged } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/runOnPropChange';
@@ -114,14 +115,16 @@ export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152B
   protected async onInit(): Promise<void> {
     this._environmentMessage = this._getEnvironmentMessage();
 
-    this._repoLink = gitRepoDrillDown; //Set as any but will get created in FPSSuperOnOnit
-    // this._analyticsListX = analyticsList;
+    this._repoLink = gitRepoCoreFPS1152Small; //Set as any but will get created in FPSSuperOnOnit
+    this._analyticsListX = 'TilesCycleTesting';
+    this._fpsSiteThemes = stylesFPS;
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
     this._trickyApp = 'FPS UPDATE FPSBaseClass';
     this._trickyEmailsWP = []; // These are emails that get tricky functionality for this specific web part
     this._allowShowSearch = false;  //Set to true if you want 'Toggle Search option' in property pane
     this._allowSiteThemeChoice = true;  // Should be set true by default in fps-library-v2 1.0.78
+    this._allowPinMe = true;
 
     return super.onInit().then(async _ => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -130,7 +133,7 @@ export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152B
     });
   }
 
-  
+
   /***
    *    d8888b. d88888b d8b   db d8888b. d88888b d8888b.       .o88b.  .d8b.  db      db      .d8888. 
    *    88  `8D 88'     888o  88 88  `8D 88'     88  `8D      d8P  Y8 d8' `8b 88      88      88'  YP 

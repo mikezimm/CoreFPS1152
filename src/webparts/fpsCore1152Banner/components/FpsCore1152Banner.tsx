@@ -1,24 +1,21 @@
 import * as React from 'react';
 import styles from './FpsCore1152Banner.module.scss';
+
 import { IFpsCore1152BannerProps, IFpsCore1152BannerState } from './IFpsCore1152BannerProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 
 
 import { saveViewAnalytics } from '../CoreFPS/Analytics';
 
-// import FetchBanner from '../CoreFPS/FetchBannerElement';
 import FetchBannerX from '@mikezimm/fps-library-v2/lib/banner/bannerX/FetchBannerX';
 // import { createSpecialElement } from '@mikezimm/fps-library-v2/lib/banner/components/SpecialBanner/component';
 // import { ISpecialMessage, } from '@mikezimm/fps-library-v2/lib/banner/components/SpecialBanner/interface';
 
 import { getWebPartHelpElementBoxTiles } from '../PropPaneHelp/PropPaneHelp';
 import { getBannerPages, } from './HelpPanel/AllContent';
-import { check4Gulp, IBannerPages, IPinMeState, makeid } from "../fpsMinIndex";
+import { check4Gulp, IBannerPages, makeid } from "../fpsReferences";
 
-import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsMinIndex";
-
-import { ISiteThemes } from "@mikezimm/fps-library-v2/lib/common/commandStyles/ISiteThemeChoices";
-const SiteThemes: ISiteThemes = { dark: styles.fpsSiteThemeDark, light: styles.fpsSiteThemeLight, primary: styles.fpsSiteThemePrimary };
+import { ILoadPerformance, startPerformOp, updatePerformanceEnd } from "../fpsReferences";
 
 //Use this to add more console.logs for this component
 const consolePrefix: string = 'fpsconsole: FpsCore115Banner';
@@ -233,7 +230,7 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
       // bonusHTML1={ 'BonusHTML1 Text' }
       panelPerformance={ this._performance }
       // bonusHTML2={ <div>BonusHTML2 Div</div> }
-      siteThemes = { SiteThemes }
+      // siteThemes = { SiteThemes }
 
       bannerProps={ this.props.bannerProps }
       parentState={ this.state }
@@ -251,12 +248,23 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
 
     />;
 
+    // const TestElement: JSX.Element = <EasyAnalyticsHook 
+    //   easyAnalyticsProps = {{ ...this.props.bannerProps.easyAnalyticsProps, ...{ expandedState: true }  } }
+    //   easyPagesSourceProps={ this.props.bannerProps.easyPagesSourceProps }
+
+    // />
+
     return (
       <section className={`${styles.fpsCore1152Banner} ${hasTeamsContext ? styles.teams : ''}`}>
         { devHeader }
         { Banner }
+        {/* { TestElement } */}
+
         <div className={styles.welcome}>
-          <img  onClick={ this._doSomething.bind(this)} alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
+          <img  onClick={ this._doSomething.bind(this)} alt="" 
+
+            src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
+
           <h2>Well done, {escape(userDisplayName)}!</h2>
           <div>{environmentMessage}</div>
           <div>Web part property value: <strong>{escape(description)}</strong></div>
@@ -282,7 +290,8 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
   }
 
   private _doSomething(): void {
-    const result = this._updatePerformance();
+    // const result = this._updatePerformance();
+    return;
   }
 
 }

@@ -8,7 +8,7 @@ import { futureContent } from './FuturePlans';
 import { basicsContent } from './Basics';
 import { tricksTable } from './Tricks';
 import { getRandomTip, webParTips } from './Tips';
-import { IWebpartBannerProps, IBannerPages } from '../../fpsMinIndex';
+import { IWebpartBannerProps, IBannerPages } from '../../fpsReferences';
 
 export function getBannerPages ( bannerProps: IWebpartBannerProps ): IBannerPages {
 

@@ -1,0 +1,112 @@
+@import '~office-ui-fabric-react/dist/css/fabric.min.css';
+
+.sourcePage {
+  padding: 10px 20px 20px 20px;
+  margin: 0 0px !important;
+
+}
+
+.searchSourceDesc {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 12px;
+}
+
+/* Could commonize with searchBoxRow.css */
+.searchSourceStatus {
+  /* @extend .floatRight; not neccessary */
+  padding-left: 20px;
+  padding-right: 60px;
+}
+
+.searchSourceStatus.fps-gen-goToLink {
+  padding-left: 50px;
+}
+
+.sourceDesc {
+  font-size: larger;
+  font-weight: 600;
+  margin-right: 30px;
+}
+
+.errorLink {
+  cursor: pointer;
+  color: darkblue;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-left: 10px;
+
+}
+
+.topSearch {
+    /* background: pink; */
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.topSearch .button {
+    cursor: pointer;
+    padding: 7px 10px;
+    height: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* max-width: 50px; */
+    margin-right: 10px;
+    margin-top: 10px;
+
+    text-decoration: none;
+    text-align: center;
+
+    /* Primary Button */
+    min-width: 50px;
+    background-color: lightgray;
+    border-width: 0px;
+    color: black;
+}
+
+.sourcePage .button.isSelected,
+.sourcePage button.isSelected {
+    /* background-color: $ms-color-themePrimary;
+    border-color: $ms-color-themePrimary;
+    color: $ms-color-white; */
+    font-weight: 600;
+}
+
+.sourceButtonRow {
+  padding-top: 10px;
+  font-weight: 600;
+}
+
+.sourceButtonRow b,
+.sourceButtonRow .button {
+  /* padding-top: 10px; */
+  font-weight: 600;
+  min-height: 34px;
+}
+
+.sourceIconElement {
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.sourceTable {
+  padding-top: 10px;
+  transition:all 0.3s ease;
+  width: 100%;
+}
+
+.sourceTable tr:nth-child(even) { background-color: #f2f2f2;}
+
+.sourceTable tr:hover { 
+  transition:all 0.3s ease;
+  background: lightgray;
+}
