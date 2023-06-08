@@ -14,3 +14,5 @@ gulp serve --nobrowser
 - npm install @pnp/spfx-property-controls@3.8.0 --save --save-exact
 
 - update tsconfig.json:  "target": "es6",
+
+gulp clean; gulp build; gulp bundle --ship; gulp package-solution --ship
