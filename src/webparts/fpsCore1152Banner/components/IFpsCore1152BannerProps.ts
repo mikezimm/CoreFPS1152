@@ -14,6 +14,7 @@ export interface IFpsCore1152BannerProps  extends IFPSCoreReactComponentProps {
   
 }
 
+export type IDefSourceType = 'lists...' | '' | '' | '' | '' | '*';
 
 /**
  * Extends IFPSCorePinMeReactComponentState with all basics required for FPS Banner

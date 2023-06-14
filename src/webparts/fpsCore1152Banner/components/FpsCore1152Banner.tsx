@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styles from './FpsCore1152Banner.module.scss';
 
-import { IFpsCore1152BannerProps, IFpsCore1152BannerState } from './IFpsCore1152BannerProps';
+import { IDefSourceType, IFpsCore1152BannerProps, IFpsCore1152BannerState } from './IFpsCore1152BannerProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 
 
@@ -44,6 +44,20 @@ export default class FpsCore1152Banner extends React.Component<IFpsCore1152Banne
  */
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
    private _farBannerElements: any[] = [];
+
+  /**
+   * Only needed to determine Promise.all fetch status
+   * @returns 
+   */
+  private _missingFetches( ) : IDefSourceType[] {
+    const { } = this.state;
+    const loads: IDefSourceType[] = [];
+    // if ( originalHubs.loaded !== true ) loads.push( 'hubs' );
+    if ( loads.length === 0 ) loads.push( '*' );
+
+    return loads;
+
+  }
 
  /***
 *     .o88b.  .d88b.  d8b   db .d8888. d888888b d8888b. db    db  .o88b. d888888b  .d88b.  d8888b. 
