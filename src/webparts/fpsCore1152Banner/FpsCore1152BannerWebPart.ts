@@ -105,6 +105,7 @@ import { onFPSPropPaneCHanged } from '@mikezimm/fps-library-v2/lib/banner/FPSWeb
 import { FPSBaseClass } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/FPSBaseClass';
 import { IThisFPSWebPartClass } from '@mikezimm/fps-library-v2/lib/banner/FPSWebPartClass/IThisFPSWebPartClass';
 import { analyticsList } from './CoreFPS/Analytics';
+import { panelVersionNumber } from './components/HelpPanel/About';
 
 
 export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152BannerWebPartProps> {
@@ -117,14 +118,21 @@ export default class FpsCore1152BannerWebPart extends FPSBaseClass<IFpsCore1152B
 
     this._repoLink = gitRepoCoreFPS1152Small; //Set as any but will get created in FPSSuperOnOnit
     this._analyticsListX = 'TilesCycleTesting';
+
     this._fpsSiteThemes = stylesFPS;
     this._exportIgnorePropsWP = exportIgnorePropsWP;
     this._importBlockPropsWP = importBlockPropsWP;
     this._trickyApp = 'FPS UPDATE FPSBaseClass';
     this._trickyEmailsWP = []; // These are emails that get tricky functionality for this specific web part
-    this._allowShowSearch = false;  //Set to true if you want 'Toggle Search option' in property pane
+
+    this._allowPinMe = false;
+    this._allowFieldPanel = 'Disabled';
+    this._FieldPanelDesignMode = 'Disabled';
+    this._allowShowSearch = true;  //Set to true if you want 'Toggle Search option' in property pane
+
     this._allowSiteThemeChoice = true;  // Should be set true by default in fps-library-v2 1.0.78
     this._allowPinMe = true;
+    this._panelVersion = panelVersionNumber;
 
     return super.onInit().then(async _ => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
